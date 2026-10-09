@@ -9,6 +9,7 @@ const defaultEvent = (id: number, type = 'Walima', pkgId = 'signature'): EventCo
 type EventConfig = { id: number; type: string; date: string; city: string; venue: string; setting: string; pkgId: string; sel: Selection };
 type Info = { name: string; phone: string; email: string; notes: string };
 const defaultInfo: Info = { name: '', phone: '', email: '', notes: '' };
+const formAccessKey = (import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '').trim();
 
 export default function Calculator() {
   const [events, setEvents] = useState<EventConfig[]>([defaultEvent(1)]);
@@ -82,21 +83,39 @@ export default function Calculator() {
 
   async function sendEnquiry() {
     if (sending) return;
+    if (!formAccessKey) {
+      setStatus('Email enquiries are not yet configured. Please send your quote using WhatsApp instead.');
+      return;
+    }
     if (!info.name.trim() || !info.phone.trim()) { setStatus('Please enter your name and phone / WhatsApp number first.'); return; }
     if (!consent) { setStatus('Please confirm your consent to be contacted.'); return; }
-    setSending(true); setStatus('Sending your enquiry…');
+    setSending(true);
+    setStatus('Sending your enquiry…');
     try {
-      const body = new URLSearchParams({
-        'form-name': 'quote-enquiry', name: info.name.trim(), phone: info.phone.trim(), email: info.email.trim(),
-        event_type: events.map(e => e.type).join(', '), event_date: events.map(e => e.date || 'TBC').join(', '),
-        city: events.map(e => e.city).join(', '), venue: events.map(e => e.venue || 'TBC').join(', '),
-        quotation: quoteText, consent: 'yes',
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          access_key: formAccessKey,
+          subject: `New MS Studio wedding quotation — ${info.name.trim()}`,
+          from_name: 'MS Studio Website',
+          name: info.name.trim(),
+          phone: info.phone.trim(),
+          email: info.email.trim(),
+          event_type: events.map(e => e.type).join(', '),
+          event_date: events.map(e => e.date || 'TBC').join(', '),
+          city: events.map(e => e.city).join(', '),
+          venue: events.map(e => e.venue || 'TBC').join(', '),
+          quotation: quoteText,
+          consent: 'yes',
+          botcheck: '',
+        }),
       });
-      const result = await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body.toString() });
-      if (!result.ok) throw new Error('Form submission failed');
-      setStatus('Your enquiry has been sent. Our team will contact you; this is not a confirmed booking.');
+      const result = await response.json().catch(() => null);
+      if (!response.ok || result?.success !== true) throw new Error('Form submission not accepted');
+      setStatus('Your enquiry was received. Our team will contact you; this does not confirm a booking.');
     } catch {
-      setStatus('Could not send your enquiry. Please use the WhatsApp option instead.');
+      setStatus('The email enquiry could not be delivered. Please use the WhatsApp button instead.');
     } finally { setSending(false); }
   }
   const field = 'field';
@@ -175,7 +194,7 @@ export default function Calculator() {
         <div className="mt-6 grid gap-2">
           <a className="btn btn-solid" href={waUrl} target="_blank" rel="noopener noreferrer">Send on WhatsApp →</a>
           <button type="button" className="btn" onClick={() => window.print()}>Print / Save as PDF</button>
-          <button type="button" className="btn" disabled={sending} onClick={sendEnquiry}>{sending ? 'Sending…' : 'Send Booking Enquiry'}</button>
+          {formAccessKey ? <button type="button" className="btn" disabled={sending} onClick={sendEnquiry}>{sending ? 'Sending…' : 'Send Booking Enquiry by Email'}</button> : <p className="text-xs leading-5 text-charcoal/60">Email enquiry is being set up. For now, use WhatsApp to send your quote.</p>}
           <button type="button" className="mt-1 text-xs underline" onClick={() => { setInfo(defaultInfo); setEvents([defaultEvent(1)]); setActiveId(1); setConsent(false); setStatus('Calculator reset.'); }}>Start again</button>
         </div>
         {status && <p className="mt-3 text-sm" role="status">{status}</p>}

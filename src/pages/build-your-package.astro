@@ -6,8 +6,4 @@ import Calculator from '../components/Calculator';
   <section class="wrap py-16"><p class="eyebrow">Quotation Calculator</p><h1 class="mt-3 text-5xl">Build Your Wedding Experience</h1>
   <p class="mb-10 mt-3 max-w-xl text-charcoal/70">Customize every detail of your wedding coverage and receive an instant estimated quotation.</p>
   <Calculator client:load /></section>
-  <!-- Static copy so Netlify detects the calculator's enquiry form at build time -->
-  <form name="quote-enquiry" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
-    <input name="name" /><input name="phone" /><input name="email" /><input name="event_type" /><input name="event_date" /><input name="city" /><input name="venue" /><textarea name="quotation"></textarea><input name="consent" /><input name="bot-field" />
-  </form>
 </Base>

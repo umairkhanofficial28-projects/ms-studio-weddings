@@ -8,7 +8,7 @@ export const site = {
   city: 'Lahore',
   country: 'Pakistan',
   launchApproved: false, // Flip to true ONLY after reviewing policies, image rights and forms. Enables Google indexing.
-  url: 'https://weddingsbyumair.netlify.app', // keep in sync with astro.config.mjs
+  url: 'https://ms-studio-weddings.pages.dev', // keep in sync with astro.config.mjs
   phoneDisplay: '+92 313 40 777 77',
   phoneTel: '+923134077777',
   whatsappNumber: '923134077777',
