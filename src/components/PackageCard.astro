@@ -1,0 +1,13 @@
+---
+import { pkr } from '../lib/pricing';
+const { pkg } = Astro.props;
+---
+<article class={`relative flex flex-col border p-8 reveal ${pkg.id==='signature'?'border-burgundy bg-white':'border-beige bg-ivory'}`}>
+  {pkg.badge && <span class="absolute -top-3 left-8 bg-burgundy px-3 py-1 text-[10px] uppercase tracking-[0.25em] text-white">{pkg.badge}</span>}
+  <h3 class="text-3xl">{pkg.name}</h3>
+  <p class="mt-3 font-serif text-4xl">{pkr(pkg.price)}</p>
+  <p class="mt-2 text-sm text-charcoal/70">{pkg.photographers} Photographer{pkg.photographers>1?'s':''} · {pkg.videographers} Videographer{pkg.videographers>1?'s':''}</p>
+  <ul class="mt-6 flex-1 space-y-2 text-sm">{pkg.includes.map((i:string)=><li class="border-b border-beige/70 pb-2">{i}</li>)}</ul>
+  {pkg.note && <p class="mt-4 text-xs italic text-charcoal/60">{pkg.note}</p>}
+  <a href={`/build-your-package/?package=${pkg.id}`} class="btn btn-solid mt-6 text-center">Customise &amp; Get Quote</a>
+</article>

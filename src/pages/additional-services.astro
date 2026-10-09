@@ -1,0 +1,11 @@
+---
+import Base from '../layouts/Base.astro';
+import { addons, addonGroups } from '../data/addons';
+import { pkr } from '../lib/pricing';
+---
+<Base title="Wedding Add-ons & Additional Services" description="Add-on services: drone, FPV, JIB, photo booths, 360 video booth, albums, pre/post-event coverage and testimonials.">
+  <section class="wrap py-16"><p class="eyebrow">Add-ons</p><h1 class="mt-3 text-5xl">Additional Services</h1>
+  {Object.entries(addonGroups).map(([g,label])=><div class="mt-10"><h2 class="text-2xl">{label}</h2><ul class="mt-3 divide-y divide-beige border-y border-beige">
+    {addons.filter(a=>a.group===g).map(a=><li class="flex justify-between gap-4 py-3 text-sm"><span>{a.label}{a.note&&<span class="block text-xs text-charcoal/60">{a.note}</span>}</span><span class="whitespace-nowrap">{pkr(a.price)}</span></li>)}</ul></div>)}
+  <p class="mt-10"><a class="btn btn-solid" href="/build-your-package/">Build your package</a></p></section>
+</Base>

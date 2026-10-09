@@ -1,0 +1,9 @@
+---
+import Base from '../layouts/Base.astro';
+import { termsSections } from '../data/policies';
+---
+<Base title="Terms & Conditions" description="Booking terms and conditions for MS Studio — Weddings by Umair.">
+  <section class="wrap max-w-3xl py-16"><p class="eyebrow">Legal</p><h1 class="mt-3 text-5xl">Terms &amp; Conditions</h1>
+  <p class="mt-3 text-xs text-charcoal/60">Based on the M&amp;S Packages 2025–26 document. Pending final owner and legal review.</p>
+  {termsSections.map((s,i)=><div class="mt-8"><h2 class="text-2xl">{i+1}. {s.h}</h2><ul class="mt-2 list-disc space-y-1 pl-5 text-sm text-charcoal/80">{s.p.map(x=><li>{x}</li>)}</ul></div>)}</section>
+</Base>

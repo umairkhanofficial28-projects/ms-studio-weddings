@@ -1,0 +1,11 @@
+---
+import Base from '../layouts/Base.astro';
+import { testimonials } from '../data/testimonials';
+import { googleMaps } from '../data/socials';
+---
+<Base title="Client Testimonials" description="Genuine client reviews of MS Studio — Weddings by Umair, Lahore.">
+  <section class="wrap py-16"><p class="eyebrow">Testimonials</p><h1 class="mt-3 text-5xl">Kind Words</h1>
+  {testimonials.length===0 ? <p class="mt-10 border border-dashed border-champagne p-12 text-center text-charcoal/60">Verified client reviews will appear here. We only publish genuine reviews with permission.</p> :
+  <div class="mt-10 grid gap-6 md:grid-cols-2">{testimonials.map(t=><blockquote class="border border-beige p-6"><p class="font-serif text-xl">“{t.text}”</p><footer class="mt-3 text-xs uppercase tracking-widest">{t.name}{t.event&&` · ${t.event}`}</footer></blockquote>)}</div>}
+  <p class="mt-10 space-x-3"><a class="btn" href={googleMaps.listingUrl} target="_blank" rel="noopener noreferrer">View on Google</a>{googleMaps.reviewUrl&&<a class="btn" href={googleMaps.reviewUrl} target="_blank" rel="noopener noreferrer">Write a Google review</a>}</p></section>
+</Base>

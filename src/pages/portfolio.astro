@@ -1,0 +1,37 @@
+---
+import Base from '../layouts/Base.astro';
+import { Image, getImage } from 'astro:assets';
+import { photos, usedCategories, folderLabels } from '../lib/gallery';
+const items = await Promise.all(photos.map(async (p) => ({ ...p, full: (await getImage({ src: p.src, width: 2200, format: 'webp' })).src })));
+---
+<Base title="Wedding Photography Portfolio — Lahore" description="Wedding photography portfolio by MS Studio, Lahore: Nikkah, Mehndi, Baraat, Walima, bride & groom portraits and candid moments.">
+  <section class="wrap py-16"><p class="eyebrow">Portfolio</p><h1 class="mt-3 text-5xl">Wedding Stories</h1>
+  {items.length === 0 ? <p class="mt-10 border border-dashed border-champagne p-12 text-center text-charcoal/60">Our portfolio is being curated. Add photographs to <code>src/assets/gallery/&lt;category&gt;/</code> and they will appear here automatically.</p> : <>
+    <div class="mt-8 flex flex-wrap gap-2" role="group" aria-label="Filter gallery">
+      <button class="filter btn !py-2 btn-solid" data-f="all">All</button>
+      {usedCategories.map(c => <button class="filter btn !py-2" data-f={c}>{folderLabels[c] ?? c}</button>)}</div>
+    <div id="grid" class="mt-8 columns-1 gap-4 sm:columns-2 lg:columns-3">
+      {items.map((p, i) => <figure class="item mb-4 break-inside-avoid" data-c={p.category}><button class="open block w-full" data-i={i} aria-label={`Open ${p.title}`}>
+        <Image src={p.src} alt={p.alt} widths={[400, 800, 1200]} sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw" loading="lazy" class="w-full" /></button>
+        {p.caption && <figcaption class="mt-1 text-xs text-charcoal/60">{p.caption}</figcaption>}</figure>)}</div>
+    <div id="lb" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/95" role="dialog" aria-modal="true" aria-label="Image viewer">
+      <button id="lb-x" class="absolute right-4 top-4 text-3xl text-white" aria-label="Close">×</button>
+      <button id="lb-p" class="absolute left-3 top-1/2 text-4xl text-white" aria-label="Previous">‹</button>
+      <img id="lb-img" alt="" class="max-h-[92vh] max-w-[94vw] object-contain" />
+      <button id="lb-n" class="absolute right-3 top-1/2 text-4xl text-white" aria-label="Next">›</button></div>
+    <script is:inline define:vars={{ data: items.map(p => ({ s: p.full, a: p.alt, c: p.category })) }}>
+      let cur = 0, vis = data.map((_, i) => i); const lb = document.getElementById('lb'), im = document.getElementById('lb-img');
+      const show = (i) => { cur = i; im.src = data[vis[cur]].s; im.alt = data[vis[cur]].a; };
+      const open = (idx) => { vis = [...document.querySelectorAll('.item')].map((el, i) => el.style.display === 'none' ? -1 : i).filter(i => i >= 0); show(vis.indexOf(idx)); lb.classList.remove('hidden'); lb.classList.add('flex'); document.getElementById('lb-x').focus(); };
+      const close = () => { lb.classList.add('hidden'); lb.classList.remove('flex'); };
+      const step = (d) => show((cur + d + vis.length) % vis.length);
+      document.querySelectorAll('.open').forEach(b => b.addEventListener('click', () => open(+b.dataset.i)));
+      document.getElementById('lb-x').onclick = close; document.getElementById('lb-p').onclick = () => step(-1); document.getElementById('lb-n').onclick = () => step(1);
+      addEventListener('keydown', e => { if (lb.classList.contains('hidden')) return; if (e.key === 'Escape') close(); if (e.key === 'ArrowLeft') step(-1); if (e.key === 'ArrowRight') step(1); });
+      let x0 = 0; lb.addEventListener('touchstart', e => x0 = e.touches[0].clientX, { passive: true }); lb.addEventListener('touchend', e => { const d = e.changedTouches[0].clientX - x0; if (Math.abs(d) > 50) step(d > 0 ? -1 : 1); });
+      document.querySelectorAll('.filter').forEach(b => b.addEventListener('click', () => { const f = b.dataset.f;
+        document.querySelectorAll('.filter').forEach(x => x.classList.toggle('btn-solid', x === b));
+        document.querySelectorAll('.item').forEach(el => el.style.display = f === 'all' || el.dataset.c === f ? '' : 'none'); }));
+    </script></>}
+  </section>
+</Base>

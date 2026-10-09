@@ -1,0 +1,8 @@
+{
+  "daylight/brochure-daylight-couple.webp": {"title": "Daylight couple portrait", "alt": "Couple walking near a heritage building in a wedding portrait", "featured": true, "order": 1, "caption": "Selected from the MS Studio 2025–26 brochure"},
+  "wedding-stories/brochure-cinematic-silhouette.webp": {"title": "A cinematic moment", "alt": "Silhouetted bride and groom beneath dramatic beams of light", "featured": true, "order": 2, "caption": "Selected from the MS Studio 2025–26 brochure"},
+  "baraat/brochure-royal-ceremony.webp": {"title": "Wedding stage portrait", "alt": "Bride and groom standing on a decorated wedding stage", "featured": true, "order": 3, "caption": "Selected from the MS Studio 2025–26 brochure"},
+  "bride-groom/brochure-couple-garden.webp": {"title": "Together", "alt": "Bride and groom posing together outdoors beside greenery", "featured": true, "order": 4},
+  "bride-groom/brochure-couple-red.webp": {"title": "Wedding day", "alt": "Bride in red bridal attire standing beside groom in a wedding portrait", "featured": true, "order": 5},
+  "bride-groom/brochure-couple-heritage.webp": {"title": "Portraits in the courtyard", "alt": "Bride and groom posing outside an elegant heritage building", "featured": true, "order": 6}
+}

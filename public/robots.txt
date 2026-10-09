@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://weddingsbyumair.netlify.app/sitemap-index.xml

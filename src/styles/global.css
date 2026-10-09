@@ -1,0 +1,28 @@
+@tailwind base; @tailwind components; @tailwind utilities;
+@layer base {
+  html { scroll-behavior: smooth; }
+  body { @apply bg-cream text-charcoal font-sans antialiased; }
+  h1,h2,h3 { @apply font-serif font-medium tracking-tight; }
+  :focus-visible { outline: 2px solid #8f1d24; outline-offset: 3px; }
+  ::selection { background: #8f1d24; color: #fff; }
+}
+@layer components {
+  .btn { @apply inline-flex items-center justify-center border border-charcoal px-6 py-3 text-center text-xs uppercase tracking-[0.15em] transition duration-300 hover:bg-charcoal hover:text-cream; }
+  .btn-solid { @apply bg-charcoal text-cream hover:border-burgundy hover:bg-burgundy; }
+  .eyebrow { @apply text-[11px] uppercase tracking-[0.3em] text-burgundy; }
+  .wrap { @apply mx-auto max-w-6xl px-5 md:px-8; }
+  .field { @apply w-full rounded-none border border-beige bg-white px-3 py-3 text-sm outline-offset-2; }
+}
+.reveal { opacity: 0; transform: translateY(14px); transition: opacity .8s ease, transform .8s ease; }
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }
+.print-sheet { display: none; }
+@media print {
+  @page { margin: 18mm; size: A4; }
+  body * { visibility: hidden !important; }
+  .print-sheet, .print-sheet * { visibility: visible !important; }
+  .print-sheet { display: block !important; position: absolute; left: 0; top: 0; width: 100%; padding: 0; color: #111; font-family: Georgia, serif; }
+  .print-sheet table { border-collapse: collapse; }
+  .print-sheet td { border-bottom: 1px solid #ddd; padding: 7px; }
+  .print-sheet section { break-inside: avoid; margin-top: 14px; }
+}

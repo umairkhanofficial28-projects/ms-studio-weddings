@@ -1,0 +1,12 @@
+---
+import Base from '../layouts/Base.astro';
+import { films } from '../data/films';
+const src = (f:any)=> f.provider==='youtube'?`https://www.youtube-nocookie.com/embed/${f.id}`: f.provider==='vimeo'?`https://player.vimeo.com/video/${f.id}`: f.id;
+---
+<Base title="Cinematic Wedding Films — Lahore" description="Cinematic wedding films and highlights by MS Studio, Lahore, Pakistan.">
+  <section class="wrap py-16"><p class="eyebrow">Cinematic Films</p><h1 class="mt-3 text-5xl">Wedding Films</h1>
+  {films.length===0 ? <p class="mt-10 border border-dashed border-champagne p-12 text-center text-charcoal/60">Films coming soon. Add authorised videos in <code>src/data/films.ts</code>.</p> :
+  <div class="mt-10 grid gap-10 md:grid-cols-2">{films.map(f=><figure>
+    {f.provider==='file' ? <video controls preload="none" class="w-full" src={src(f)} /> : <iframe class="aspect-video w-full" src={src(f)} title={f.title} loading="lazy" allowfullscreen></iframe>}
+    <figcaption class="mt-3"><h2 class="text-2xl">{f.title}</h2><p class="text-xs uppercase tracking-widest text-charcoal/60">{[f.event,f.couple,f.location].filter(Boolean).join(' · ')}</p>{f.description&&<p class="mt-2 text-sm">{f.description}</p>}</figcaption></figure>)}</div>}</section>
+</Base>

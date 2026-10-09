@@ -1,0 +1,56 @@
+---
+import Base from '../layouts/Base.astro';
+import PackageCard from '../components/PackageCard.astro';
+import { Image } from 'astro:assets';
+import heroImage from '../assets/site/hero.webp';
+import filmImage from '../assets/gallery/wedding-stories/brochure-cinematic-silhouette.webp';
+import { site, whatsappLink } from '../data/site';
+import { packages } from '../data/packages';
+import { photos } from '../lib/gallery';
+import { socials } from '../data/socials';
+const featured = (photos.some(p => p.featured) ? photos.filter(p => p.featured) : photos).slice(0,6);
+---
+<Base title="Wedding Photographer & Cinematographer in Lahore, Pakistan" description="MS Studio — Weddings by Umair: editorial wedding photography, wedding films and custom coverage in Lahore, Pakistan.">
+  <section class="relative isolate min-h-[82vh] overflow-hidden bg-ink text-ivory md:min-h-[90vh]">
+    <Image src={heroImage} alt="Bride and groom walking together by a heritage building — from the MS Studio wedding brochure" widths={[800,1200,1600,2000]} sizes="100vw" format="webp" quality={85} loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[42%_center]" />
+    <div class="absolute inset-0 -z-10 bg-gradient-to-r from-ink/85 via-ink/45 to-ink/10"></div>
+    <div class="wrap flex min-h-[82vh] flex-col justify-end pb-16 pt-32 md:min-h-[90vh] md:pb-24">
+      <p class="eyebrow !text-champagne">A wedding story, beautifully told · {site.city}</p>
+      <h1 class="mt-7 max-w-4xl text-5xl font-normal leading-[.98] tracking-tight sm:text-6xl md:text-[clamp(5rem,8vw,8rem)]">{site.heroHeadline}</h1>
+      <p class="mt-7 max-w-md text-sm leading-7 text-ivory/85 md:text-base">{site.tagline}</p>
+      <div class="mt-9 flex flex-wrap gap-3"><a href="/portfolio/" class="btn !border-ivory !text-ivory hover:!bg-ivory hover:!text-ink">Explore the portfolio</a><a href="/build-your-package/" class="btn !border-ivory/40 !bg-ivory !text-ink">Create your experience</a></div>
+      <div class="mt-14 flex items-center gap-3 text-[10px] uppercase tracking-[.26em] text-ivory/75"><span class="h-px w-10 bg-ivory/70"></span> Wedding Photography & Cinematography</div>
+    </div>
+  </section>
+
+  <section class="wrap grid gap-14 py-24 md:grid-cols-[.85fr_1.15fr] md:items-start md:py-32">
+    <div><p class="eyebrow">The art of remembering</p><h2 class="mt-4 text-4xl leading-tight md:text-6xl">Real moments.<br/><em>Lasting stories.</em></h2></div>
+    <div class="max-w-xl pt-2"><p class="text-lg leading-8 text-charcoal/80">There are moments that deserve more than a photograph. At MS Studio, we approach wedding days with an eye for emotion, detail and thoughtful cinematic storytelling.</p>
+      <p class="mt-5 text-sm leading-7 text-charcoal/70">Led by {site.founder}, our team covers your celebrations with photography, films and carefully designed albums. Explore our wedding experiences or tell us the story you want to create.</p>
+      <a class="mt-8 inline-block border-b border-burgundy pb-1 text-xs uppercase tracking-[.2em]" href="/about/">Discover our studio →</a></div>
+  </section>
+
+  <section class="bg-ivory py-24 md:py-28"><div class="wrap">
+    <div class="mb-10 flex flex-wrap items-end justify-between gap-4"><div><p class="eyebrow">The portfolio</p><h2 class="mt-3 text-4xl md:text-6xl">Collected moments</h2></div><a href="/portfolio/" class="text-xs uppercase tracking-[.2em] underline underline-offset-4">View all photographs →</a></div>
+    {featured.length ? <div class="columns-1 gap-4 sm:columns-2 lg:columns-3">{featured.map((p,i) => <a href="/portfolio/" class="group relative mb-4 block break-inside-avoid overflow-hidden bg-beige">
+      <Image src={p.src} alt={p.alt} widths={[500,850,1100]} sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw" class="w-full transition-transform duration-700 group-hover:scale-[1.035]" loading="lazy" />
+      <span class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-4 pb-4 pt-12 text-xs uppercase tracking-[.18em] text-white opacity-0 transition group-hover:opacity-100">{p.title}</span>
+    </a>)}</div> : <p class="border border-dashed border-champagne p-10 text-center">Add your photographs under <code>src/assets/gallery</code>.</p>}
+    <p class="mt-5 text-xs text-charcoal/50">Preview photographs are crops from your supplied 2025–26 studio brochure. Replace with original files and confirm client publication permissions before public launch.</p>
+  </div></section>
+
+  <section class="bg-ink text-ivory"><div class="grid items-center md:grid-cols-2"><div class="relative min-h-[350px] overflow-hidden md:min-h-[540px]"><Image src={filmImage} alt="Couple silhouetted in cinematic window light" widths={[800,1200,1600]} sizes="(min-width:768px) 50vw, 100vw" class="absolute inset-0 h-full w-full object-cover" loading="lazy" /></div>
+    <div class="px-8 py-20 md:px-16 xl:px-24"><p class="eyebrow !text-champagne">Motion & emotion</p><h2 class="mt-4 text-4xl md:text-6xl">More than a film.<br/><em>A feeling.</em></h2><p class="mt-7 max-w-md leading-8 text-ivory/70">From the quiet details to the biggest celebration, our films are crafted to help you relive the day.</p><a href="/films/" class="btn mt-8 !border-ivory/60 !text-ivory hover:!bg-ivory hover:!text-ink">Explore wedding films</a></div></div></section>
+
+  <section class="wrap py-24 md:py-32"><div class="mb-12 text-center"><p class="eyebrow">Wedding experiences</p><h2 class="mt-3 text-4xl md:text-6xl">Thoughtfully designed,<br/><em>personally yours.</em></h2></div>
+    <div class="grid gap-6 md:grid-cols-3">{packages.map(pkg => <PackageCard pkg={pkg} />)}</div>
+    <p class="mt-10 text-center text-sm text-charcoal/70">Every celebration is different. Choose a collection or create your own.</p>
+    <p class="mt-6 text-center"><a href="/build-your-package/" class="btn btn-solid">Build a custom quote →</a></p>
+  </section>
+
+  <section class="border-y border-beige bg-ivory py-24 text-center"><div class="wrap max-w-3xl"><p class="eyebrow">The creative team</p><h2 class="mt-4 text-4xl md:text-6xl">The people behind<br/><em>the moments.</em></h2><p class="mx-auto mt-6 max-w-xl leading-8 text-charcoal/70">Meet founder and creative director {site.founder} and discover the people behind our wedding stories.</p><div class="mt-8 flex flex-wrap justify-center gap-3"><a href="/founder/" class="btn">Meet the founder</a><a href="/team/" class="btn btn-solid">Our team</a></div></div></section>
+
+  <section class="wrap py-24 text-center md:py-32"><p class="eyebrow">Your wedding starts here</p><h2 class="mt-4 text-4xl md:text-6xl">Let's tell your story.</h2><p class="mx-auto mt-5 max-w-xl leading-8 text-charcoal/70">Planning something wonderful? Tell us your date, your city and the celebrations you have in mind.</p>
+    <div class="mt-9 flex flex-wrap justify-center gap-3"><a class="btn btn-solid" href={whatsappLink('Assalam o Alaikum, I would like to enquire about wedding coverage with MS Studio.')} target="_blank" rel="noopener noreferrer">Talk on WhatsApp</a><a class="btn" href="/contact/">Send an enquiry</a></div>
+    <p class="mt-9 text-xs uppercase tracking-[.19em] text-charcoal/55">{socials.filter(s=>['instagram','facebook','google'].includes(s.id)).map(s=><a class="mx-2 inline-block py-2 underline-offset-4 hover:underline" href={s.url} target="_blank" rel="noopener noreferrer">{s.label}</a>)}</p></section>
+</Base>
