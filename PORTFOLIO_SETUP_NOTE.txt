@@ -1,0 +1,17 @@
+MS Studio Wedding Portfolio – 6 Wedding Collections
+
+This upload patch contains code and photos for 6 separate wedding galleries.
+All six Albums (1–6) from the user-supplied MS-Studio-Portfolio.zip are included:
+ - couple-01 through couple-06
+ - Each folder has its own cover.webp and its wedding photos (01.webp, 02.webp, etc.).
+
+On desktop, the homepage below the hero and the portfolio page show 3 equal 4:5 cover cards per row (3 + 3).
+On tablets, 2 cards per row; on narrow phones, 1 card per row.
+Click a cover to open only that wedding's photos. There are no visible captions or photo source labels.
+
+To update the live GitHub repository, extract this ZIP and upload the contents of src/ to the repository root. It includes updates to:
+ src/pages/index.astro, src/pages/portfolio.astro, src/pages/portfolio/[slug].astro,
+ src/lib/albums.ts, src/styles/global.css, src/assets/couples/couple-01 ... couple-06.
+
+This is a partial update, not the entire website: do not delete other existing files.
+The current production build has not been verified in this environment. Cloudflare Pages will build upon GitHub commit; verify that deployment succeeds before checking the website.

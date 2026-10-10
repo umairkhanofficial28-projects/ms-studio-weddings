@@ -1,0 +1,88 @@
+---
+import Base from '../../layouts/Base.astro';
+import { Image, getImage } from 'astro:assets';
+import { albums, type CoupleAlbum } from '../../lib/albums';
+
+export function getStaticPaths() {
+  return albums.map((album) => ({ params: { slug: album.slug }, props: { album } }));
+}
+
+const { album } = Astro.props as { album: CoupleAlbum };
+const images = await Promise.all(album.photos.map(async p => ({
+  ...p,
+  full: (await getImage({ src: p.src, width: 2200, format: 'webp', quality: 87 })).src
+})));
+---
+<Base title="Wedding Story Portfolio — MS Studio" description="A wedding photography collection by MS Studio — Weddings by Umair.">
+  <section class="wrap py-10 md:py-16">
+    <a href="/portfolio/" class="inline-flex items-center gap-2 py-3 text-xs uppercase tracking-[.18em] hover:text-burgundy" aria-label="Back to portfolio">← &nbsp; Back to portfolio</a>
+    <div class="catalog-inner-grid mt-7 md:mt-10">
+      {images.map((photo, i) => (
+        <button type="button" class="album-photo-button" data-gallery-image data-full={photo.full} data-alt={`Wedding photograph ${i + 1}`} aria-label={`Open photograph ${i + 1}`}>
+          <Image src={photo.src} alt={`Wedding photograph ${i + 1}`} widths={[400,640,900]} sizes="(min-width:1024px) 32vw, (min-width:640px) 48vw, 100vw" loading={i < 3 ? 'eager' : 'lazy'} class="catalog-photo" />
+        </button>
+      ))}
+    </div>
+    {images.length === 0 && <p class="py-20 text-center text-sm text-charcoal/60">This wedding story is being prepared.</p>}
+  </section>
+
+  <div id="catalog-lightbox" class="fixed inset-0 z-[90] hidden items-center justify-center bg-black/95" role="dialog" aria-modal="true" aria-label="Wedding photograph viewer" aria-hidden="true">
+    <button id="catalog-close" type="button" aria-label="Close gallery" class="absolute right-4 top-4 z-10 flex h-12 w-12 items-center justify-center text-4xl text-white">×</button>
+    <button id="catalog-prev" type="button" aria-label="Previous photograph" class="absolute left-2 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center text-4xl text-white sm:left-4">‹</button>
+    <img id="catalog-large" alt="" class="max-h-[90vh] max-w-[88vw] object-contain" />
+    <button id="catalog-next" type="button" aria-label="Next photograph" class="absolute right-2 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center text-4xl text-white sm:right-4">›</button>
+  </div>
+  <script>
+    const items = [...document.querySelectorAll<HTMLButtonElement>('[data-gallery-image]')];
+    const lightbox = document.getElementById('catalog-lightbox')!;
+    const large = document.getElementById('catalog-large') as HTMLImageElement;
+    const closeBtn = document.getElementById('catalog-close')!;
+    const prevBtn = document.getElementById('catalog-prev')!;
+    const nextBtn = document.getElementById('catalog-next')!;
+    let index = 0;
+    let priorFocus: HTMLElement | null = null;
+    const show = (i: number) => {
+      if (!items.length) return;
+      index = (i + items.length) % items.length;
+      large.src = items[index].dataset.full ?? '';
+      large.alt = items[index].dataset.alt ?? 'Wedding photograph';
+    };
+    const open = (i: number) => {
+      priorFocus = document.activeElement as HTMLElement;
+      show(i);
+      lightbox.classList.remove('hidden');
+      lightbox.classList.add('flex');
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      closeBtn.focus();
+    };
+    const close = () => {
+      lightbox.classList.add('hidden');
+      lightbox.classList.remove('flex');
+      lightbox.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      large.removeAttribute('src');
+      priorFocus?.focus();
+    };
+    items.forEach((item, i) => item.addEventListener('click', () => open(i)));
+    closeBtn.addEventListener('click', close);
+    prevBtn.addEventListener('click', () => show(index - 1));
+    nextBtn.addEventListener('click', () => show(index + 1));
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) close(); });
+    document.addEventListener('keydown', e => {
+      if (lightbox.classList.contains('hidden')) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowLeft') show(index - 1);
+      if (e.key === 'ArrowRight') show(index + 1);
+      if (e.key === 'Tab') {
+        const controls = [closeBtn, prevBtn, nextBtn];
+        const n = controls.indexOf(document.activeElement as HTMLElement);
+        if (e.shiftKey && n === 0) { e.preventDefault(); nextBtn.focus(); }
+        else if (!e.shiftKey && n === controls.length - 1) { e.preventDefault(); closeBtn.focus(); }
+      }
+    });
+    let x0 = 0;
+    lightbox.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, { passive: true });
+    lightbox.addEventListener('touchend', e => { const d = e.changedTouches[0].clientX - x0; if (Math.abs(d) > 50) show(index + (d < 0 ? 1 : -1)); }, { passive: true });
+  </script>
+</Base>
