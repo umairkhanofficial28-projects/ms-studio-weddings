@@ -3,6 +3,7 @@ import '../styles/global.css';
 import { site } from '../data/site';
 import { socials } from '../data/socials';
 import studioLogo from '../assets/site/ms-studio-logo.png';
+import WelcomeExperience from '../components/WelcomeExperience.astro';
 interface Props { title: string; description?: string; image?: string }
 const { title, description = site.description, image = "/og-cover.webp" } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).toString();
@@ -28,6 +29,7 @@ const ld = { '@context':'https://schema.org','@type':'ProfessionalService',name:
   <script type="application/ld+json" set:html={JSON.stringify(ld)} />
 </head>
 <body>
+  <WelcomeExperience />
   <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-white focus:p-3">Skip to content</a>
   <header class="sticky top-0 z-40 border-b border-beige bg-cream/90 backdrop-blur">
     <div class="wrap flex items-center justify-between gap-5 py-4 md:py-5">

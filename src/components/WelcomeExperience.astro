@@ -1,0 +1,200 @@
+---
+// The PUBLIC_ prefix is necessary because this key is used by browser-side Web3Forms.
+// This is a public form identifier, not a password or secret.
+import studioLogo from '../assets/site/ms-studio-logo.png';
+const formKey = String(import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '').trim();
+---
+<div id="ms-welcome" class="msw-overlay" hidden aria-hidden="true" data-ready={formKey ? 'true' : 'false'}>
+  <section class="msw-intro msw-stage" data-stage="intro" aria-label="MS Studio welcome introduction">
+    <div class="msw-ambient" aria-hidden="true"></div>
+    <div class="msw-reveal">
+      <span class="msw-halo" aria-hidden="true"></span>
+      <img src={studioLogo.src} width="166" height="144" alt="MS Studio" class="msw-logo" decoding="async" />
+      <div class="msw-line" aria-hidden="true"></div>
+      <p class="msw-brand">MS STUDIO</p>
+      <p class="msw-subbrand">WEDDINGS BY UMAIR</p>
+      <p class="msw-motto">Your story, beautifully told.</p>
+    </div>
+    <button class="msw-skip" type="button" data-msw-close>Skip intro <span aria-hidden="true">↗</span></button>
+  </section>
+
+  <section class="msw-panel msw-stage" data-stage="form" role="dialog" aria-modal="true" aria-labelledby="msw-heading" hidden>
+    <div class="msw-panel-top">
+      <img src={studioLogo.src} width="46" height="42" alt="" class="msw-small-logo" />
+      <button type="button" class="msw-icon-close" data-msw-close aria-label="Close welcome form">×</button>
+    </div>
+    <div class="msw-card-body">
+      <p class="msw-kicker">WELCOME TO MS STUDIO</p>
+      <h2 id="msw-heading">Let's capture your story.</h2>
+      <p class="msw-desc">Planning a celebration? Share a few details and we’ll get in touch. You can explore the website without submitting anything.</p>
+      {formKey ? (
+        <form id="msw-form" data-access-key={formKey} novalidate>
+          <div class="msw-fields">
+            <label class="msw-field msw-wide"><span>Full name <b aria-hidden="true">*</b></span><input autocomplete="name" name="name" required maxlength="100" placeholder="Your name" /></label>
+            <label class="msw-field msw-wide"><span>WhatsApp number <b aria-hidden="true">*</b></span><input autocomplete="tel" name="phone" type="tel" required minlength="7" maxlength="25" placeholder="+92 3XX XXXXXXX" /></label>
+            <label class="msw-field"><span>Event type <b aria-hidden="true">*</b></span><select required name="event_type"><option value="">Select event</option><option>Nikkah</option><option>Mehndi</option><option>Baraat</option><option>Walima</option><option>Multiple events</option><option>Engagement</option><option>Couple shoot</option><option>Other</option></select></label>
+            <label class="msw-field"><span>Event date (optional)</span><input type="date" name="event_date" /></label>
+          </div>
+          <label class="msw-consent"><input type="checkbox" name="consent" required /> <span>I agree to be contacted about this enquiry. See the <a href="/privacy/" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.</span></label>
+          <div class="msw-actions">
+            <button type="submit" class="msw-submit">Send enquiry <span aria-hidden="true">↗</span></button>
+            <button type="button" class="msw-bypass" data-msw-close>Explore without sharing</button>
+          </div>
+          <p class="msw-notice" id="msw-message" role="status" aria-live="polite"></p>
+        </form>
+      ) : (
+        <div class="msw-offline"><p>Quick enquiries are currently unavailable. You can still explore the website or contact us from the Contact page.</p><button type="button" class="msw-submit" data-msw-close>Enter website ↗</button></div>
+      )}
+    </div>
+    <p class="msw-bottom-note">An enquiry does not confirm a booking.</p>
+  </section>
+</div>
+
+<style>
+  .msw-overlay { position:fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center; padding:20px; background:#11100e; color:#f8f5f1; isolation:isolate; overflow-y:auto; overscroll-behavior:contain; font-family:'DM Sans',Arial,sans-serif; }
+  .msw-overlay[hidden], .msw-stage[hidden] { display:none !important; }
+  .msw-stage { position:relative; width:100%; }
+  .msw-intro { min-height:calc(100dvh - 40px); display:flex; align-items:center; justify-content:center; overflow:hidden; }
+  .msw-ambient { pointer-events:none;position:absolute;inset:0; background:radial-gradient(ellipse at 50% 45%,rgba(146,34,31,.18),transparent 48%),radial-gradient(ellipse at 50% 90%,rgba(185,157,112,.09),transparent 54%); }
+  .msw-reveal { position:relative;text-align:center;display:flex;align-items:center;flex-direction:column;justify-content:center; padding:32px 12px 60px; }
+  .msw-halo { position:absolute; top:5px; width:260px;height:260px;border-radius:50%;border:1px solid rgba(193,163,117,.13);box-shadow:0 0 90px rgba(174,26,34,.09);animation:msw-ring 1.4s ease-out both; }
+  .msw-logo { position:relative; display:block; width:clamp(110px,17vw,166px);height:auto;object-fit:contain;opacity:0;animation:msw-logo-in 1.05s cubic-bezier(.18,.84,.27,1) .12s both;filter:drop-shadow(0 12px 32px rgba(180,12,25,.18)); }
+  .msw-line { width:0;height:1px;background:linear-gradient(90deg,transparent,#be9e69,transparent); margin:32px 0 22px;animation:msw-line 1s ease .55s both; }
+  .msw-brand { margin:0;font-family:'Playfair Display',Georgia,serif;font-size:clamp(29px,4.8vw,43px);font-weight:500;letter-spacing:.12em;opacity:0;animation:msw-fade-up .8s ease .65s both; }
+  .msw-subbrand { margin:7px 0 0;letter-spacing:.38em;text-indent:.38em;font-size:9px;font-weight:600;color:#c8ae92;opacity:0;animation:msw-fade-up .8s ease .8s both; }
+  .msw-motto { margin:36px 0 0;font-family:'Playfair Display',Georgia,serif;font-style:italic;font-size:17px;color:#d6c8bb;opacity:0;animation:msw-fade-up .8s ease 1s both; }
+  .msw-skip { position:absolute;right:8px;bottom:18px;z-index:2;border:1px solid rgba(244,236,226,.3);padding:11px 16px;background:transparent;color:#efe8e0;letter-spacing:.12em;text-transform:uppercase;font-size:10px;cursor:pointer; }
+  .msw-skip:hover,.msw-skip:focus-visible { background:#fff;color:#191512; }
+  .msw-panel { max-width:530px; margin:auto; background:#f8f5ef; color:#201b18; box-shadow:0 25px 90px rgba(0,0,0,.4); border:1px solid rgba(185,151,114,.38); max-height:calc(100dvh - 40px); overflow:auto; animation:msw-panel-in .42s ease both; }
+  .msw-panel-top { display:flex;align-items:center;justify-content:space-between;padding:18px 27px 10px; }
+  .msw-small-logo { width:38px;height:38px;object-fit:contain; }
+  .msw-icon-close { border:0;background:transparent;color:#282321; font-size:32px;line-height:1;width:40px;height:40px;cursor:pointer; }
+  .msw-card-body { padding:14px 42px 8px; }
+  .msw-kicker { color:#a32c2f;font-size:10px;font-weight:700;letter-spacing:.24em; }
+  .msw-card-body h2 { font-family:'Playfair Display',Georgia,serif;font-weight:500;letter-spacing:-.035em;font-size:clamp(32px,5vw,44px);line-height:1.13;margin:12px 0 11px; }
+  .msw-desc { font-size:13px;line-height:1.7;color:#68605b;margin:0 0 23px; }
+  .msw-fields { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px 16px; }
+  .msw-wide { grid-column:span 2; }
+  .msw-field { display:flex;flex-direction:column;gap:7px;font-size:12px;font-weight:600;color:#403733; }
+  .msw-field b { color:#a32c2f; }
+  .msw-field input,.msw-field select { width:100%;min-width:0;height:43px;border:1px solid #d6cbc1;border-radius:0;background:#fff;color:#1c1715;padding:0 12px;font:400 13px 'DM Sans',Arial,sans-serif; }
+  .msw-field :is(input,select):focus-visible { outline:2px solid #ac313a;outline-offset:2px; }
+  .msw-consent { display:flex;align-items:flex-start;gap:10px;line-height:1.5;margin:18px 0 16px;font-size:11px;color:#544a45;cursor:pointer; }
+  .msw-consent input { margin-top:2px;flex-shrink:0;accent-color:#8e1c22; }
+  .msw-consent a { text-decoration:underline;text-underline-offset:2px; }
+  .msw-actions { display:flex;flex-direction:column;gap:9px; }
+  .msw-submit { min-height:46px;display:flex;align-items:center;justify-content:center;gap:12px;width:100%;border:1px solid #211b19;background:#211b19;color:#fff;font-family:'DM Sans',Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;cursor:pointer; }
+  .msw-submit:disabled { opacity:.55;cursor:wait; }
+  .msw-submit:not(:disabled):hover,.msw-submit:focus-visible { background:#8e1c22;border-color:#8e1c22; }
+  .msw-bypass { color:#4e403c;min-height:40px; background:transparent;border:0;cursor:pointer;font-size:12px;text-decoration:underline;text-underline-offset:3px; }
+  .msw-notice { font-size:12px;line-height:1.6;min-height:20px;margin:6px 0 0;color:#8e1c22; }
+  .msw-bottom-note { text-align:center;color:#82776f;font-size:10px;margin:0;padding:12px 22px 17px; }
+  .msw-offline { margin:22px 0 10px; }
+  .msw-offline p { font-size:13px;line-height:1.8;color:#68605b; }
+  .msw-offline button { margin-top:14px; }
+  @keyframes msw-logo-in { from { opacity:0;transform:translateY(20px) scale(.78);filter:blur(8px) } to { opacity:1;transform:translateY(0) scale(1);filter:drop-shadow(0 12px 32px rgba(180,12,25,.18)) } }
+  @keyframes msw-line { from { width:0;opacity:0 } to { width:155px;opacity:1 } }
+  @keyframes msw-fade-up { from { opacity:0;transform:translateY(10px) } to { opacity:1;transform:translateY(0) } }
+  @keyframes msw-ring { from { opacity:0;transform:scale(.75) } to { opacity:1;transform:scale(1) } }
+  @keyframes msw-panel-in { from { opacity:0;transform:translateY(16px) scale(.99) } to { opacity:1;transform:translateY(0) scale(1) } }
+  @media (max-width:530px) { .msw-overlay { padding:10px; } .msw-intro { min-height:calc(100dvh - 20px); }.msw-panel {max-height:calc(100dvh - 20px);}.msw-card-body {padding:9px 22px 6px;}.msw-panel-top{padding:10px 14px 5px}.msw-desc{margin-bottom:16px}.msw-fields{gap:10px}.msw-field input,.msw-field select{height:42px}.msw-skip{right:8px;bottom:12px;} }
+  @media (prefers-reduced-motion: reduce) { .msw-overlay *, .msw-overlay *::before, .msw-overlay *::after { animation:none !important;transition:none !important; } .msw-logo,.msw-brand,.msw-subbrand,.msw-motto{opacity:1 !important;} .msw-line{width:155px !important;} }
+</style>
+<script is:inline>
+  (() => {
+    const overlay = document.getElementById('ms-welcome');
+    if (!overlay) return;
+    const storageName = 'msstudio_welcome_seen_v1';
+    let shouldOpen = true;
+    try { shouldOpen = sessionStorage.getItem(storageName) !== '1'; } catch (_) { /* private/storage-restricted mode: show again on next navigation */ }
+    if (!shouldOpen) return;
+    try { sessionStorage.setItem(storageName,'1'); } catch (_) {}
+    const intro = overlay.querySelector('[data-stage="intro"]');
+    const panel = overlay.querySelector('[data-stage="form"]');
+    const form = overlay.querySelector('#msw-form');
+    const message = overlay.querySelector('#msw-message');
+    const submit = form?.querySelector('[type="submit"]');
+    const priorOverflow = document.body.style.overflow;
+    const priorFocus = document.activeElement;
+    let timer;
+    let stage = 'intro';
+    let sent = false;
+    const focusable = () => [...overlay.querySelectorAll('button:not([disabled]),input:not([disabled]),select:not([disabled]),a[href]')].filter(el => !el.closest('[hidden]') && el.getClientRects().length);
+    const close = () => {
+      if (timer) clearTimeout(timer);
+      overlay.hidden = true;
+      overlay.setAttribute('aria-hidden','true');
+      document.body.style.overflow = priorOverflow;
+      document.removeEventListener('keydown', onKey);
+      if (priorFocus instanceof HTMLElement) priorFocus.focus({preventScroll:true});
+    };
+    const toForm = () => {
+      if (overlay.hidden || stage !== 'intro') return;
+      stage = 'form';
+      intro.hidden = true;
+      panel.hidden = false;
+      (panel.querySelector('input[name="name"]') || panel.querySelector('[data-msw-close]'))?.focus({preventScroll:true});
+    };
+    const onKey = event => {
+      if (event.key === 'Escape') { event.preventDefault(); close(); return; }
+      if (event.key !== 'Tab') return;
+      const els=focusable();
+      if (!els.length) { event.preventDefault(); return; }
+      const i=els.indexOf(document.activeElement);
+      if (event.shiftKey && i <= 0) { event.preventDefault(); els[els.length-1].focus(); }
+      else if (!event.shiftKey && (i === els.length-1 || i === -1)) { event.preventDefault(); els[0].focus(); }
+    };
+    overlay.hidden=false;
+    overlay.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+    document.addEventListener('keydown',onKey);
+    overlay.querySelectorAll('[data-msw-close]').forEach(b => b.addEventListener('click',close));
+    overlay.querySelector('.msw-skip')?.focus({preventScroll:true});
+    timer=setTimeout(toForm, window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 180 : 1800);
+    if (!form || !submit || !message) return;
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      if (sent) { close(); return; }
+      if (submit.disabled) return;
+      if (!form.reportValidity()) return;
+      const key=form.dataset.accessKey;
+      if (!key) { message.textContent='Quick enquiries are unavailable. Please use our Contact page.'; return; }
+      const data=new FormData(form);
+      const fields={
+        access_key:key,
+        subject:'New MS Studio welcome enquiry',
+        from_name:'MS Studio Website',
+        name:String(data.get('name')||'').trim(),
+        phone:String(data.get('phone')||'').trim(),
+        event_type:String(data.get('event_type')||'').trim(),
+        event_date:String(data.get('event_date')||'').trim(),
+        consent:'yes',
+        source:'Cinematic welcome enquiry popup',
+        message:'A visitor requested a wedding photography consultation through the MS Studio welcome panel.',
+        botcheck:'',
+      };
+      submit.disabled=true;
+      submit.textContent='Sending enquiry…';
+      message.textContent='';
+      try {
+        const response=await fetch('https://api.web3forms.com/submit',{
+          method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(fields)
+        });
+        const result=await response.json().catch(()=>null);
+        if (!response.ok || result?.success!==true) throw new Error('Submission not accepted');
+        message.style.color='#356a3b';
+        message.textContent='Thank you! Your enquiry was received. Our team will contact you. You can now explore the website.';
+        submit.textContent='Enter website ↗';
+        submit.disabled=false;
+        form.reset();
+        // Clicking Enter website after a successful send never submits twice.
+        sent=true;
+      } catch (_) {
+        message.style.color='#8e1c22';
+        message.textContent='Could not send your enquiry. Please try again or use our Contact page. You can still explore the website.';
+        submit.disabled=false;
+        submit.textContent='Send enquiry ↗';
+      }
+    });
+  })();
+</script>
