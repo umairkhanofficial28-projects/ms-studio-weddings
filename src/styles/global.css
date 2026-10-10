@@ -1,18 +1,65 @@
-@tailwind base; @tailwind components; @tailwind utilities;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* MS Studio typography — one editorial display face + one readable UI/body face. */
 @layer base {
-  html { scroll-behavior: smooth; }
-  body { @apply bg-cream text-charcoal font-sans antialiased; }
-  h1,h2,h3 { @apply font-serif font-medium tracking-tight; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body { @apply bg-cream text-charcoal font-sans antialiased; font-size: 16px; line-height: 1.7; letter-spacing: -0.005em; }
+  h1, h2, h3, h4, h5, h6 { @apply font-serif; font-weight: 500; letter-spacing: -0.028em; line-height: 1.16; text-wrap: balance; }
+  p, li { overflow-wrap: break-word; }
+  a, button, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+  button, input, select, textarea { font: inherit; }
   :focus-visible { outline: 2px solid #8f1d24; outline-offset: 3px; }
   ::selection { background: #8f1d24; color: #fff; }
 }
+
 @layer components {
-  .btn { @apply inline-flex items-center justify-center border border-charcoal px-6 py-3 text-center text-xs uppercase tracking-[0.15em] transition duration-300 hover:bg-charcoal hover:text-cream; }
+  .btn { @apply inline-flex items-center justify-center border border-charcoal px-6 py-3 font-sans text-center uppercase transition duration-300 hover:bg-charcoal hover:text-cream; font-size: 12px; font-weight: 600; line-height: 1.45; letter-spacing: .105em; min-height: 46px; }
   .btn-solid { @apply bg-charcoal text-cream hover:border-burgundy hover:bg-burgundy; }
-  .eyebrow { @apply text-[11px] uppercase tracking-[0.3em] text-burgundy; }
+  .eyebrow { @apply font-sans uppercase text-burgundy; font-size: 12px; font-weight: 600; line-height: 1.5; letter-spacing: .185em; }
   .wrap { @apply mx-auto max-w-6xl px-5 md:px-8; }
-  .field { @apply w-full rounded-none border border-beige bg-white px-3 py-3 text-sm outline-offset-2; }
+  .field { @apply w-full rounded-none border border-beige bg-white px-3 py-3 font-sans outline-offset-2; font-size: 15px; line-height: 1.5; }
 }
+
+/* Deliberate, predictable scale across About, Founder, Portfolio, Packages, FAQ, etc.
+   These rules are outside Tailwind layers so legacy text-5xl / text-7xl classes
+   do not produce inconsistent oversized titles. Calculator section headings stay compact. */
+main h1 {
+  font-size: clamp(2.45rem, 4.8vw, 4.35rem);
+  line-height: 1.13;
+  font-weight: 500;
+  letter-spacing: -0.038em;
+  text-wrap: balance;
+}
+main section[aria-label="Wedding photography and cinematography"] h1 {
+  font-size: clamp(2.5rem, 4.0vw, 3.9rem);
+  line-height: 1.12;
+  letter-spacing: -0.033em;
+}
+main h2[class*="text-4xl"],
+main h2[class*="text-5xl"],
+main h2[class*="text-6xl"],
+main h2[class*="text-7xl"] {
+  font-size: clamp(2.08rem, 3.6vw, 3.35rem);
+  line-height: 1.17;
+  font-weight: 500;
+  letter-spacing: -0.032em;
+}
+main h3.text-3xl { font-size: clamp(1.45rem, 2.3vw, 1.82rem); line-height: 1.23; }
+main .text-sm { font-size: 15px; line-height: 1.7; }
+main .text-xs { font-size: 12.5px; line-height: 1.55; }
+main .eyebrow { font-size: 12px; line-height: 1.5; }
+main .btn { font-size: 12px; line-height: 1.4; }
+main blockquote { line-height: 1.35; }
+main article ul { line-height: 1.7; }
+@media (max-width: 639px) {
+  main h1 { font-size: clamp(2.2rem, 9vw, 3rem); }
+  main section[aria-label="Wedding photography and cinematography"] h1 { font-size: clamp(2.15rem, 8vw, 3rem); }
+  main h2[class*="text-4xl"], main h2[class*="text-5xl"], main h2[class*="text-6xl"], main h2[class*="text-7xl"] { font-size: clamp(1.95rem, 7.4vw, 2.55rem); }
+  .eyebrow { letter-spacing: .14em; }
+}
+
 .reveal { opacity: 0; transform: translateY(14px); transition: opacity .8s ease, transform .8s ease; }
 .reveal.in { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }

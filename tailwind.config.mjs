@@ -7,8 +7,8 @@ export default {
         beige: '#e7dccb', charcoal: '#222120', ink: '#0f0e0d', burgundy: '#8f1d24',
       },
       fontFamily: {
-        serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        serif: ['"Playfair Display"', 'Georgia', 'serif'],
+        sans: ['"DM Sans"', 'system-ui', 'sans-serif'],
       },
     },
   },

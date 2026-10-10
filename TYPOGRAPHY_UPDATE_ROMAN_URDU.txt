@@ -1,0 +1,25 @@
+MS STUDIO — TYPOGRAPHY UPDATE
+
+Sirf 3 files update karni hain:
+  1) src/styles/global.css
+  2) src/layouts/Base.astro
+  3) tailwind.config.mjs (root par)
+
+Google Fonts: Playfair Display (headings) + DM Sans (all body/UI).
+
+Kya improve hoga:
+- All page H1 titles use a consistent size and good line heights.
+- Large section headings balanced, no mixed giant text.
+- Body, paragraphs, field labels, menus and buttons easier to read.
+- Header logo and navigation become more legible.
+- Existing 6-couple 3+3 catalog styles and all print rules retained.
+- Hero image, pages, packages, pricing and Web3Forms files unchanged.
+
+HOW TO UPLOAD:
+1. ZIP Extract All.
+2. GitHub ms-studio-weddings main upload page par extracted files/folders drag karein.
+3. Ensure 3 paths are correct: src/styles/global.css, src/layouts/Base.astro, tailwind.config.mjs (ROOT).
+4. Commit message: Refine website typography and readability
+5. Cloudflare Deployments green tick, then Ctrl + Shift + R for fresh version.
+
+Build/visual test: This is a focused source patch. Cloudflare deployment and mobile visuals need live verification.
