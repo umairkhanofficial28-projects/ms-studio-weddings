@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import { site } from '../data/site';
 import { socials } from '../data/socials';
+import studioLogo from '../assets/site/ms-studio-logo.png';
 interface Props { title: string; description?: string; image?: string }
 const { title, description = site.description, image = "/og-cover.webp" } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).toString();
@@ -17,7 +18,7 @@ const ld = { '@context':'https://schema.org','@type':'ProfessionalService',name:
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{full}</title>{!site.launchApproved && <meta name="robots" content="noindex, nofollow" />}<meta name="description" content={description} /><link rel="canonical" href={canonical} />
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="/favicon.png" type="image/png" />
   <meta property="og:title" content={full} /><meta property="og:description" content={description} />
   <meta property="og:type" content="website" /><meta property="og:url" content={canonical} /><meta property="og:site_name" content={site.name} />
   <meta property="og:image" content={ogImage} /><meta property="og:image:alt" content="MS Studio — Weddings by Umair wedding photography" />
@@ -30,7 +31,9 @@ const ld = { '@context':'https://schema.org','@type':'ProfessionalService',name:
   <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-white focus:p-3">Skip to content</a>
   <header class="sticky top-0 z-40 border-b border-beige bg-cream/90 backdrop-blur">
     <div class="wrap flex items-center justify-between gap-5 py-4 md:py-5">
-      <a href="/" class="font-serif text-[23px] font-medium leading-[1.07] tracking-[-.035em]">MS <span class="font-light">STUDIO</span><span class="mt-1 block font-sans text-[10px] font-semibold uppercase tracking-[0.17em] text-burgundy">by Umair Khan</span></a>
+      <a href="/" class="inline-flex shrink-0 items-center" aria-label="MS Studio — Weddings by Umair, home">
+        <img src={studioLogo.src} alt="MS Studio original red monogram" width="82" height="70" class="block h-[54px] w-auto object-contain md:h-[66px]" decoding="async" fetchpriority="high" />
+      </a>
       <button id="menu-btn" class="text-[12px] font-semibold uppercase tracking-[0.12em] md:hidden" aria-expanded="false" aria-controls="menu">Menu</button>
       <nav id="menu" class="hidden items-center gap-5 text-[12px] font-semibold uppercase tracking-[0.10em] md:flex lg:gap-7" aria-label="Main">
         {nav.map(([l,h]) => <a href={h} class="hover:text-burgundy" aria-current={Astro.url.pathname===h?'page':undefined}>{l}</a>)}

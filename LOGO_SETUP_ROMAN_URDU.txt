@@ -1,0 +1,24 @@
+MS STUDIO — EXACT ORIGINAL LOGO UPDATE
+
+Uploaded logo: MS studio-01.png (2048x2048, RGBA).
+Original red monogram is preserved. Only transparent empty margins have been cropped.
+
+UPLOAD THIS PATCH TO YOUR GITHUB REPOSITORY ROOT:
+  src/layouts/Base.astro
+  src/assets/site/ms-studio-logo.png
+  public/favicon.png
+
+GitHub: https://github.com/umairkhanofficial28-projects/ms-studio-weddings/upload/main
+Commit message: Replace header text and favicon with original MS Studio logo
+
+RESULT:
+* Header text monogram replaced by your exact red symbol
+* Browser tab shows your matching brand symbol
+* Navbar logo stays linked to homepage
+* Desktop and mobile sizes adapt
+* Existing homepage, calculator, images, album galleries, and booking forms are untouched
+
+If you previously edited src/layouts/Base.astro independently after the typography update,
+check the diff before committing. This patch is based on the earlier premium-fonts layout version.
+
+Actual Cloudflare production build has not been run in this environment; verify the latest deployment status.
