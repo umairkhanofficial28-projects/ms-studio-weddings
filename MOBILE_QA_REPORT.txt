@@ -1,0 +1,38 @@
+MS STUDIO — MOBILE QA REPORT
+
+Reviewed (latest locally available project patches):
+- Navbar / Theme selector / logo
+- Cinematic welcome modal / Web3Forms UI
+- Homepage hero / six album covers and internal galleries
+- Calculator layout and input accessibility / contact form CSS
+
+Changes:
+1. Phone and tablet navigation: full-width accessible menu, close/Escape,
+   outside-tap close, auto close after choosing page or resizing to desktop.
+2. Phone typography and image grids: balanced hero copy and buttons,
+   4:5 collection cards, smaller gaps and no landscape-style stretching.
+3. Popup: input fields stack on narrow phones, 16px font to prevent iOS Safari
+   input auto-zoom, independently scrollable panel and visible close button.
+4. Readability: 16px form entry text on phones, 44-48px controls,
+   saved Light/Dark/System control retained, original logo on a neutral card
+   for contrast when dark mode is selected.
+
+Tests completed:
+- JavaScript parse checks on site header scripts, welcome popup script,
+  and ThemeSwitcher script: passed.
+- Chromium DOM fixture at 320, 375, 390, 430, 480, 768, 1024, 1280 px:
+  horizontal overflow, nav menu open/Escape and field font-size: 28/28 passed.
+- Chromium welcome form fixture at 320, 375, 390, 430 px:
+  modal displayed, 16px text, no sideways overflow, panel within viewport,
+  optional close: passed at all 4 widths.
+
+Not yet tested/guaranteed:
+- This browser fixture is NOT the fully built live Astro website.
+- Cloudflare build, real-device Safari / Chrome, email delivery,
+  WhatsApp opening, dark-mode full-page screenshots, React calculator
+  workflows and PDF-print rendering need verification after deployment.
+- npm/Astro dependencies unavailable locally, so no npm run build was performed.
+
+Safety:
+- No pricing, packages, contact addresses, WEB3FORMS env names, or gallery
+  images changed in this patch.

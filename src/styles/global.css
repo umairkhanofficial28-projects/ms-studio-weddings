@@ -122,3 +122,58 @@ main article ul { line-height: 1.7; }
 :root[data-theme="dark"] input[type="radio"] { accent-color:#b83942; }
 :root[data-theme="dark"] .btn:hover:not(.btn-solid) { color:rgb(var(--ms-cream)); }
 @media print { :root[data-theme="dark"] body { background:white !important;color:#111 !important; } }
+
+
+/* --- MS Studio mobile-first polish (October 2026) ---
+   An additive section preserving existing custom theme variables and print rules. */
+html,body { max-width:100%; }
+main,main section,main .wrap { min-width:0; }
+main img, main video, main iframe { max-width:100%; }
+main :where(h1,h2,h3,h4,p,li,blockquote) { overflow-wrap:break-word; }
+.ms-site-header { isolation:isolate; }
+.ms-header-logo { min-width:0; }
+.ms-mobile-toggle { display:inline-flex; align-items:center; justify-content:center; gap:8px; min-width:46px; min-height:46px; padding:8px 10px; color:rgb(var(--ms-charcoal)); background:transparent; border:1px solid rgb(var(--ms-beige)); font:600 12px/1.2 'DM Sans',system-ui,sans-serif; letter-spacing:.04em; cursor:pointer; }
+.ms-mobile-toggle:focus-visible { outline:2px solid #b83e4b; outline-offset:2px; }
+@media (min-width:1280px) { .ms-mobile-toggle { display:none !important; } }
+@media (max-width:1279px) {
+  .ms-site-nav { display:none !important; position:absolute; top:100%; left:0; right:0; z-index:48; flex-direction:column; align-items:stretch; gap:0; max-height:calc(100dvh - 75px); overflow-y:auto; overscroll-behavior:contain; padding:8px 20px 18px; background:rgb(var(--ms-cream)); color:rgb(var(--ms-charcoal)); border-bottom:1px solid rgb(var(--ms-beige)); box-shadow:0 14px 25px rgba(0,0,0,.13); }
+  .ms-site-nav[data-mobile-open="true"] { display:flex !important; }
+  .ms-site-nav a { display:flex; min-height:49px; align-items:center; padding:12px 6px; font-size:13px; font-weight:600; line-height:1.5; letter-spacing:.055em; border-bottom:1px solid rgb(var(--ms-beige) / .55); text-decoration:none; }
+  .ms-site-nav a:last-child { border-bottom:0; }
+  .ms-site-nav a[aria-current="page"] { color:#b94e56; }
+}
+:root[data-theme="dark"] .ms-header-logo { background:#f8f4ee; padding:3px 7px; border-radius:2px; }
+/* Preserve legibility of the original black lettering underneath the red monogram in dark mode. */
+@media (max-width:639px) {
+  .ms-site-header .wrap { padding-left:16px; padding-right:16px; }
+  .ms-header-logo img { height:48px; }
+  main :is(input:not([type="checkbox"]):not([type="radio"]),select,textarea) { font-size:16px !important; min-width:0; max-width:100%; }
+  main input[type="date"] { min-height:46px; }
+  main .btn { min-height:48px; max-width:100%; text-align:center; }
+  main .grid > *, main .flex > * { min-width:0; }
+  main :is(.text-xs, .text-sm) { overflow-wrap:break-word; }
+  main section[aria-label="Wedding photography and cinematography"] > .wrap { min-height:max(620px,85svh); padding-top:112px; padding-bottom:40px; }
+  main section[aria-label="Wedding photography and cinematography"] h1 { font-size:clamp(2.1rem,8vw,3rem); line-height:1.12; }
+  main section[aria-label="Wedding photography and cinematography"] .btn { flex:1 1 100%; }
+  main section[aria-label="Wedding photography and cinematography"] .eyebrow { letter-spacing:.11em; }
+  main section[aria-label="Wedding photography and cinematography"] p:last-child { letter-spacing:.09em; }
+  main section:has(.catalog-grid) { padding-top:56px; padding-bottom:60px; }
+  .catalog-grid,.catalog-inner-grid { gap:12px; }
+  .catalog-photo { object-position:center; }
+  main .wrap { padding-left:16px; padding-right:16px; }
+  footer.mt-24 { margin-top:52px; }
+  footer .wrap { padding-left:20px; padding-right:20px; }
+}
+@media (max-width:359px) {
+  .ms-menu-label { display:none; }
+  .ms-mobile-toggle { padding-inline:8px; min-width:44px; }
+  .ms-site-header .wrap { gap:4px; }
+  main h1 { font-size:2.05rem; }
+  main .eyebrow { letter-spacing:.09em; }
+}
+@media (min-width:480px) and (max-width:639px) {
+  .catalog-grid,.catalog-inner-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+/* Avoid forcing hover zoom on touchscreen devices; maintain motion accessibility. */
+@media (hover:none) { .catalog-card:hover .catalog-photo,.album-photo-button:hover .catalog-photo { transform:none; } }
+@media (prefers-reduced-motion:reduce) { .ms-site-nav, .ms-mobile-toggle { transition:none !important; } }

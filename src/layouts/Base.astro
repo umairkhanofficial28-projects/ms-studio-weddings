@@ -46,17 +46,20 @@ const ld = { '@context':'https://schema.org','@type':'ProfessionalService',name:
 <body>
   <WelcomeExperience />
   <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-white focus:p-3">Skip to content</a>
-  <header class="sticky top-0 z-40 border-b border-beige bg-cream/90 backdrop-blur">
-    <div class="wrap flex items-center justify-between gap-5 py-4 md:py-5">
-      <a href="/" class="inline-flex shrink-0 items-center" aria-label="MS Studio — Weddings by Umair, home">
-        <img src={studioLogo.src} alt="MS Studio original red monogram" width="82" height="70" class="block h-[54px] w-auto object-contain md:h-[66px]" decoding="async" fetchpriority="high" />
+  <header class="ms-site-header sticky top-0 z-40 border-b border-beige bg-cream/90 backdrop-blur">
+    <div class="wrap flex items-center justify-between gap-3 py-3 md:py-4">
+      <a href="/" class="ms-header-logo inline-flex shrink-0 items-center" aria-label="MS Studio — Weddings by Umair, home">
+        <img src={studioLogo.src} alt="MS Studio original red monogram" width="82" height="70" class="block h-[48px] w-auto object-contain sm:h-[56px] md:h-[66px]" decoding="async" fetchpriority="high" />
       </a>
-      <div class="ml-auto flex min-w-0 items-center gap-4 lg:gap-6">
-        <nav id="menu" class="hidden items-center gap-5 text-[12px] font-semibold uppercase tracking-[0.10em] xl:flex xl:gap-7" aria-label="Main">
+      <div class="ml-auto flex min-w-0 items-center gap-2 sm:gap-4 lg:gap-6">
+        <nav id="menu" class="ms-site-nav hidden items-center gap-5 text-[12px] font-semibold uppercase tracking-[0.10em] xl:flex xl:gap-7" aria-label="Main" data-mobile-open="false">
           {nav.map(([l,h]) => <a href={h} class="hover:text-burgundy" aria-current={Astro.url.pathname===h?'page':undefined}>{l}</a>)}
         </nav>
         <ThemeSwitcher />
-        <button id="menu-btn" type="button" class="min-h-11 text-[12px] font-semibold uppercase tracking-[0.12em] xl:hidden" aria-expanded="false" aria-controls="menu">Menu</button>
+        <button id="menu-btn" class="ms-mobile-toggle xl:hidden" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open navigation menu">
+          <svg class="ms-menu-svg" viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path class="ms-menu-bars" d="M4 7h16M4 12h16M4 17h16"/><path class="ms-menu-cross" d="M5 5l14 14M19 5L5 19" style="display:none"/></svg>
+          <span class="ms-menu-label">Menu</span>
+        </button>
       </div>
     </div>
   </header>
@@ -73,10 +76,40 @@ const ld = { '@context':'https://schema.org','@type':'ProfessionalService',name:
     <p class="border-t border-white/10 py-5 text-center text-xs text-ivory/50">© {new Date().getFullYear()} {site.name}. All rights reserved.</p>
   </footer>
   <script is:inline>
-    const b=document.getElementById('menu-btn'),m=document.getElementById('menu');
-    b?.addEventListener('click',()=>{const o=m.classList.toggle('hidden');m.classList.toggle('flex',!o);m.classList.toggle('flex-col',!o);m.classList.toggle('absolute',!o);m.classList.toggle('left-0',!o);m.classList.toggle('right-0',!o);m.classList.toggle('top-full',!o);m.classList.toggle('bg-cream',!o);m.classList.toggle('p-6',!o);b.setAttribute('aria-expanded',String(!o));});
-    const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target);}}),{threshold:.12});
-    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+    (() => {
+      const button = document.getElementById('menu-btn');
+      const menu = document.getElementById('menu');
+      if (!button || !menu) return;
+      const label = button.querySelector('.ms-menu-label');
+      const bars = button.querySelector('.ms-menu-bars');
+      const cross = button.querySelector('.ms-menu-cross');
+      const desktop = window.matchMedia('(min-width: 1280px)');
+      const setOpen = (open) => {
+        menu.dataset.mobileOpen = String(open);
+        button.setAttribute('aria-expanded', String(open));
+        button.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
+        if (label) label.textContent = open ? 'Close' : 'Menu';
+        if (bars) bars.style.display = open ? 'none' : '';
+        if (cross) cross.style.display = open ? '' : 'none';
+      };
+      setOpen(false);
+      button.addEventListener('click', () => setOpen(menu.dataset.mobileOpen !== 'true'));
+      menu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => setOpen(false)));
+      document.addEventListener('pointerdown', (event) => {
+        if (menu.dataset.mobileOpen === 'true' && !menu.contains(event.target) && !button.contains(event.target)) setOpen(false);
+      });
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && menu.dataset.mobileOpen === 'true') { setOpen(false); button.focus(); }
+      });
+      if (desktop.addEventListener) desktop.addEventListener('change', () => setOpen(false));
+      else desktop.addListener?.(() => setOpen(false));
+    })();
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(entries => entries.forEach(entry => {
+        if (entry.isIntersecting) { entry.target.classList.add('in'); io.unobserve(entry.target); }
+      }), { threshold: .12 });
+      document.querySelectorAll('.reveal').forEach(element => io.observe(element));
+    } else document.querySelectorAll('.reveal').forEach(element => element.classList.add('in'));
   </script>
 </body>
 </html>

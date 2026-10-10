@@ -99,6 +99,29 @@ const formKey = String(import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '').trim();
   @keyframes msw-panel-in { from { opacity:0;transform:translateY(16px) scale(.99) } to { opacity:1;transform:translateY(0) scale(1) } }
   @media (max-width:530px) { .msw-overlay { padding:10px; } .msw-intro { min-height:calc(100dvh - 20px); }.msw-panel {max-height:calc(100dvh - 20px);}.msw-card-body {padding:9px 22px 6px;}.msw-panel-top{padding:10px 14px 5px}.msw-desc{margin-bottom:16px}.msw-fields{gap:10px}.msw-field input,.msw-field select{height:42px}.msw-skip{right:8px;bottom:12px;} }
   @media (prefers-reduced-motion: reduce) { .msw-overlay *, .msw-overlay *::before, .msw-overlay *::after { animation:none !important;transition:none !important; } .msw-logo,.msw-brand,.msw-subbrand,.msw-motto{opacity:1 !important;} .msw-line{width:155px !important;} }
+
+  /* Compact phones: one field per row, safe 16px inputs (no iOS zoom), scrollable form. */
+  @media (max-width:540px) {
+    .msw-overlay { padding:8px; align-items:flex-start; }
+    .msw-stage { margin:auto; }
+    .msw-panel { width:100%; max-height:calc(100dvh - 16px); overscroll-behavior:contain; }
+    .msw-panel-top { position:sticky; top:0; z-index:3; background:#f8f5ef; }
+    .msw-card-body { padding:9px 18px 4px; }
+    .msw-card-body h2 { font-size:clamp(27px,8vw,36px); }
+    .msw-fields { grid-template-columns:minmax(0,1fr); gap:11px; }
+    .msw-wide { grid-column:auto; }
+    .msw-field :is(input,select) { min-height:47px; font-size:16px; }
+    .msw-field { font-size:13px; }
+    .msw-consent { font-size:12px; }
+    .msw-submit,.msw-bypass { min-height:48px; }
+    .msw-icon-close,.msw-skip { min-width:44px; min-height:44px; }
+    .msw-bottom-note { padding-bottom:14px; }
+  }
+  @media (max-height:620px) {
+    .msw-panel { max-height:calc(100dvh - 12px); }
+    .msw-card-body { padding-top:3px; }
+    .msw-desc { margin-bottom:12px; }
+  }
 </style>
 <script is:inline>
   (() => {
