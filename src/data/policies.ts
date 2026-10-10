@@ -1,10 +1,9 @@
 import { policy } from './site';
-// Source: PDF Terms & Conditions (12 sections). Wording preserved; subject to legal and owner review.
+// Wedding service terms. Review periodically as packages and policies evolve.
 export const termsSections = [
   { h: 'Booking & Confirmation', p: [
     'A booking is considered confirmed only after receipt of the agreed booking payment and written confirmation from the studio.',
-    `The current requested booking payment is ${policy.advancePercent}% (pending final owner approval before public launch).`,
-    ...(policy.advancePercent === 100 ? ['The confirmed booking amount must be paid in full before the event is booked, subject to owner approval of the updated policy.'] : ['The remaining balance must be cleared before the first deliverable is shared.']),
+    `A booking payment of ${policy.advancePercent}% is required to secure your date, subject to the studio confirming availability in writing.`,
     'Advance payments are non-refundable and non-transferable under all circumstances.',
     'Event dates are blocked strictly on a first-come, first-served basis upon payment.'] },
   { h: 'Payment Policy', p: [

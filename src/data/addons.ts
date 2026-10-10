@@ -1,9 +1,9 @@
-// Add-on price database — source: PDF "ADD ONS" page. Edit prices here only.
+// Add-on price database. Edit prices here only.
 export interface Addon {
   id: string; group: string; label: string; price: number;
   quantity?: boolean;        // true = client can choose a whole-number quantity
   exclusive?: string;        // add-ons sharing this key: only one can be selected
-  note?: string; flag?: string; // flag = needs owner review (see OWNER_APPROVAL_CHECKLIST.md)
+  note?: string; flag?: string; // flag = customer-facing note for items that require confirmation
 }
 export const addonGroups: Record<string, string> = {
   coverage: 'Coverage Enhancements', crew: 'Additional Team', testimonials: 'Testimonials',
@@ -27,8 +27,8 @@ export const addons: Addon[] = [
   { id: 'post-both', group: 'post', label: 'Post-Event Photography + Videography', price: 20000, exclusive: 'post' },
   { id: 'booth-unlimited', group: 'booth', label: 'Photo Booth — Unlimited Instant Prints', price: 100000, exclusive: 'photobooth' },
   { id: 'booth-300', group: 'booth', label: 'Photo Booth — 300 Instant Prints', price: 80000, exclusive: 'photobooth' },
-  { id: 'booth-200', group: 'booth', label: 'Photo Booth — 200 Instant Prints', price: 60000, exclusive: 'photobooth', flag: 'Source PDF lists 200 and 100 prints at the same price (PKR 60,000). Owner to confirm.' },
-  { id: 'booth-100', group: 'booth', label: 'Photo Booth — 100 Instant Prints', price: 60000, exclusive: 'photobooth', flag: 'Source PDF lists 200 and 100 prints at the same price (PKR 60,000). Owner to confirm.' },
+  { id: 'booth-200', group: 'booth', label: 'Photo Booth — 200 Instant Prints', price: 60000, exclusive: 'photobooth', flag: 'Print quantity and final pricing will be confirmed before booking.' },
+  { id: 'booth-100', group: 'booth', label: 'Photo Booth — 100 Instant Prints', price: 60000, exclusive: 'photobooth', flag: 'Print quantity and final pricing will be confirmed before booking.' },
   { id: 'glam360', group: 'booth', label: 'Glam 360 Video Booth', price: 80000, note: 'Slow-motion, boomerang, templates and song included.' },
   { id: 'album-story', group: 'albums', label: 'Story Book Album (70–80 photographs)', price: 22000, quantity: true, note: 'Extra album — separate from any album included in your package.' },
   { id: 'album-coffee', group: 'albums', label: 'Coffee Table Album (30–40 photographs)', price: 18000, quantity: true },

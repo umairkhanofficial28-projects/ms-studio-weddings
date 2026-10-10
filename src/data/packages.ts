@@ -17,7 +17,6 @@ export const packages: Pkg[] = [
     includes: ['Cinematic Couple Teaser', '01 Event Cinematic Highlights', '01 Full Length Cinematic Wedding Film',
       'Bride & Groom Portraits (Indoor)', 'Family Portraits & Candids', 'Complete Event Coverage (Unlimited Captures)',
       '01 Story Book Album (10 Pages)', 'Selected Edited Pictures (250)'],
-    note: 'The source PDF also says "Photography + Videography + Daylight Coverage" — exact daylight scope needs owner confirmation.',
     includedAddonIds: [],
   },
   {
@@ -26,7 +25,6 @@ export const packages: Pkg[] = [
       '01 Full Length Cinematic Wedding Film', 'Bride & Groom Portraits (Indoor)', 'Family Portraits & Candids',
       'Drone Coverage at Venue', 'Detailed Event Coverage Film', 'Complete Event Coverage (Unlimited Captures)',
       'Signature Album (10 Pages)', '01 Story Book Album (10 Pages)', 'Selected Edited Pictures (250)'],
-    note: 'Designed for luxury weddings & premium clients.',
     includedAddonIds: ['drone'],
   },
 ];

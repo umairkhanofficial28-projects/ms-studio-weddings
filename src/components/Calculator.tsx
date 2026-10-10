@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { estimateMultiple, pkr, setQuantity, toggleAddon, type Selection } from '../lib/pricing';
 import { packages } from '../data/packages';
 import { addons, addonGroups } from '../data/addons';
-import { policy, site } from '../data/site';
+import { site } from '../data/site';
 
 const EVENTS = ['Nikkah', 'Mehndi', 'Baraat', 'Walima', 'Engagement', 'Reception', 'Couple Shoot', 'Other'];
 const defaultEvent = (id: number, type = 'Walima', pkgId = 'signature'): EventConfig => ({ id, type, date: '', city: 'Lahore', venue: '', setting: 'Indoor', pkgId, sel: {} });
@@ -167,7 +167,7 @@ export default function Calculator() {
               return <div key={a.id} className={`border p-4 text-sm ${isIncluded ? 'border-beige bg-ivory' : quantity ? 'border-burgundy bg-white' : 'border-beige'}`}>
                 <label className="flex cursor-pointer items-start gap-3"><input className="mt-1" type="checkbox" name={`addon-${active.id}-${a.exclusive ?? a.id}`} checked={!isIncluded && quantity > 0} disabled={isIncluded} onChange={e => updateActive({ sel: toggleAddon(active.sel, a, addons, e.target.checked) })} /><span><span className="block">{a.label}</span><span className="mt-1 block text-xs text-charcoal/65">{isIncluded ? 'Already included — no extra charge' : `${pkr(a.price)}${a.quantity ? ' each' : ''}`}</span></span></label>
                 {a.note && <p className="mt-2 text-xs leading-5 text-charcoal/60">{a.note}</p>}
-                {a.flag && <p className="mt-2 text-xs text-burgundy">Price pending owner confirmation</p>}
+                {a.flag && <p className="mt-2 text-xs text-burgundy">Final options will be confirmed with your quotation</p>}
                 {a.quantity && quantity > 0 && !isIncluded && <label className="mt-3 flex items-center gap-3 text-xs">Quantity<input className="w-20 border border-beige px-2 py-2" type="number" min={1} max={20} step={1} value={quantity} onChange={e => updateActive({ sel: setQuantity(active.sel, a, Number(e.target.value)) })} /></label>}
               </div>;
             })}</div>
@@ -190,7 +190,6 @@ export default function Calculator() {
         <div className="mt-6 flex flex-wrap justify-between gap-2 border-t border-charcoal pt-4 font-serif text-2xl"><span>{combined.needsCustomQuote ? 'Priced subtotal' : 'Estimated total'}</span><span>{pkr(combined.pricedSubtotal)}</span></div>
         {combined.needsCustomQuote && <p className="mt-3 text-xs leading-5 text-burgundy">At least one function requires a bespoke base coverage quote. The amount shown is not a final overall price.</p>}
         <p className="mt-3 text-xs leading-5 text-charcoal/65">Non-binding estimate. Availability, taxes, outstation costs and final terms are subject to confirmation.</p>
-        {!policy.advancePercentApproved && <p className="mt-2 text-xs text-burgundy">Booking payment policy is pending owner approval.</p>}
         <div className="mt-6 grid gap-2">
           <a className="btn btn-solid" href={waUrl} target="_blank" rel="noopener noreferrer">Send on WhatsApp →</a>
           <button type="button" className="btn" onClick={() => window.print()}>Print / Save as PDF</button>
