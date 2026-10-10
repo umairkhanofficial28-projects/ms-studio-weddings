@@ -4,6 +4,7 @@ import { site } from '../data/site';
 import { socials } from '../data/socials';
 import studioLogo from '../assets/site/ms-studio-logo.png';
 import WelcomeExperience from '../components/WelcomeExperience.astro';
+import ThemeSwitcher from '../components/ThemeSwitcher.astro';
 interface Props { title: string; description?: string; image?: string }
 const { title, description = site.description, image = "/og-cover.webp" } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).toString();
@@ -26,6 +27,20 @@ const ld = { '@context':'https://schema.org','@type':'ProfessionalService',name:
   <meta name="twitter:card" content="summary_large_image" /><meta name="twitter:image" content={ogImage} />
   <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+  <!-- Apply the saved theme before first paint to avoid a light-mode flash. -->
+  <script is:inline>
+    (() => {
+      const key = 'msstudio_appearance';
+      let preference = 'light';
+      try {
+        const stored = localStorage.getItem(key);
+        if (stored === 'light' || stored === 'dark' || stored === 'system') preference = stored;
+      } catch (_) { /* storage may be disabled; preserve the light-mode default */ }
+      const dark = preference === 'dark' || (preference === 'system' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+      document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
+    })();
+  </script>
   <script type="application/ld+json" set:html={JSON.stringify(ld)} />
 </head>
 <body>
@@ -36,10 +51,13 @@ const ld = { '@context':'https://schema.org','@type':'ProfessionalService',name:
       <a href="/" class="inline-flex shrink-0 items-center" aria-label="MS Studio — Weddings by Umair, home">
         <img src={studioLogo.src} alt="MS Studio original red monogram" width="82" height="70" class="block h-[54px] w-auto object-contain md:h-[66px]" decoding="async" fetchpriority="high" />
       </a>
-      <button id="menu-btn" class="text-[12px] font-semibold uppercase tracking-[0.12em] md:hidden" aria-expanded="false" aria-controls="menu">Menu</button>
-      <nav id="menu" class="hidden items-center gap-5 text-[12px] font-semibold uppercase tracking-[0.10em] md:flex lg:gap-7" aria-label="Main">
-        {nav.map(([l,h]) => <a href={h} class="hover:text-burgundy" aria-current={Astro.url.pathname===h?'page':undefined}>{l}</a>)}
-      </nav>
+      <div class="ml-auto flex min-w-0 items-center gap-4 lg:gap-6">
+        <nav id="menu" class="hidden items-center gap-5 text-[12px] font-semibold uppercase tracking-[0.10em] xl:flex xl:gap-7" aria-label="Main">
+          {nav.map(([l,h]) => <a href={h} class="hover:text-burgundy" aria-current={Astro.url.pathname===h?'page':undefined}>{l}</a>)}
+        </nav>
+        <ThemeSwitcher />
+        <button id="menu-btn" type="button" class="min-h-11 text-[12px] font-semibold uppercase tracking-[0.12em] xl:hidden" aria-expanded="false" aria-controls="menu">Menu</button>
+      </div>
     </div>
   </header>
   <main id="main"><slot /></main>

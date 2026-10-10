@@ -1,0 +1,83 @@
+<div class="ms-theme" data-ms-theme>
+  <button type="button" class="ms-theme-trigger" data-theme-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="ms-theme-menu" aria-label="Choose website color theme">
+    <svg class="ms-theme-symbol" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M20.6 13A9 9 0 0 1 11 3.4 9 9 0 1 0 20.6 13Z" />
+    </svg>
+    <span data-theme-short>Theme</span>
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+  </button>
+  <div id="ms-theme-menu" class="ms-theme-menu" data-theme-menu role="menu" aria-label="Website appearance" hidden>
+    <button type="button" role="menuitemradio" data-theme-option="light" aria-checked="true">
+      <span aria-hidden="true">☀</span><span>Light</span><span class="ms-theme-tick" aria-hidden="true">✓</span>
+    </button>
+    <button type="button" role="menuitemradio" data-theme-option="dark" aria-checked="false">
+      <span aria-hidden="true">☾</span><span>Dark</span><span class="ms-theme-tick" aria-hidden="true">✓</span>
+    </button>
+    <button type="button" role="menuitemradio" data-theme-option="system" aria-checked="false">
+      <span aria-hidden="true">◐</span><span>System</span><span class="ms-theme-tick" aria-hidden="true">✓</span>
+    </button>
+  </div>
+</div>
+
+<style>
+  .ms-theme { position:relative; z-index:60; flex-shrink:0; font-family:'DM Sans',system-ui,sans-serif; }
+  .ms-theme-trigger { display:inline-flex; align-items:center; justify-content:center; gap:7px; min-height:44px; padding:8px 10px; border:1px solid rgb(var(--ms-beige) / .85); color:rgb(var(--ms-charcoal)); background:transparent; font-size:12px; font-weight:600; line-height:1.25; letter-spacing:.025em; cursor:pointer; }
+  .ms-theme-trigger:hover, .ms-theme-trigger[aria-expanded='true'] { border-color:#b63a45; }
+  .ms-theme-trigger:focus-visible, .ms-theme-menu button:focus-visible { outline:2px solid #bc4a52;outline-offset:3px; }
+  .ms-theme-menu { position:absolute; top:calc(100% + 10px); right:0; z-index:80; width:165px; padding:5px; background:rgb(var(--ms-cream)); border:1px solid rgb(var(--ms-beige)); box-shadow:0 14px 28px rgb(0 0 0 / .16); color:rgb(var(--ms-charcoal)); }
+  .ms-theme-menu[hidden] { display:none !important; }
+  .ms-theme-menu button { display:flex; align-items:center; gap:10px; width:100%; min-height:43px; padding:10px 12px; text-align:left; font-size:13px; background:transparent; color:inherit; border:0; cursor:pointer; }
+  .ms-theme-menu button:hover { background:rgb(var(--ms-beige) / .27); }
+  .ms-theme-tick { margin-left:auto; color:#b8424c; opacity:0; }
+  .ms-theme-menu button[aria-checked='true'] .ms-theme-tick { opacity:1; }
+  @media(max-width:399px) { .ms-theme-trigger { padding:8px; gap:4px; } .ms-theme-trigger [data-theme-short] { display:none; } }
+</style>
+<script is:inline>
+  (() => {
+    const root = document.querySelector('[data-ms-theme]');
+    if (!root) return;
+    const key = 'msstudio_appearance';
+    const trigger = root.querySelector('[data-theme-trigger]');
+    const menu = root.querySelector('[data-theme-menu]');
+    const items = [...root.querySelectorAll('[data-theme-option]')];
+    const media = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+    let preference = 'light';
+    try {
+      const value = localStorage.getItem(key);
+      if (['light', 'dark', 'system'].includes(value)) preference = value;
+    } catch (_) {}
+    const apply = () => {
+      const active = preference === 'dark' || (preference === 'system' && !!media?.matches) ? 'dark' : 'light';
+      document.documentElement.dataset.theme = active;
+      document.documentElement.style.colorScheme = active;
+      const chosen = preference[0].toUpperCase() + preference.slice(1);
+      trigger?.setAttribute('aria-label', `Appearance: ${chosen}. Change color theme`);
+      const label = trigger?.querySelector('[data-theme-short]');
+      if (label) label.textContent = chosen;
+      items.forEach(button => button.setAttribute('aria-checked', String(button.dataset.themeOption === preference)));
+    };
+    const close = () => { menu.hidden = true; trigger.setAttribute('aria-expanded', 'false'); };
+    trigger?.addEventListener('click', () => {
+      const opening = menu.hidden;
+      menu.hidden = !opening;
+      trigger.setAttribute('aria-expanded', String(opening));
+      if (opening) items.find(button => button.dataset.themeOption === preference)?.focus();
+    });
+    items.forEach(button => button.addEventListener('click', () => {
+      preference = button.dataset.themeOption;
+      try { localStorage.setItem(key, preference); } catch (_) {}
+      apply();
+      close();
+      trigger.focus();
+    }));
+    document.addEventListener('pointerdown', e => { if (!root.contains(e.target)) close(); });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && !menu.hidden) { close(); trigger.focus(); }
+    });
+    if (media) {
+      if (media.addEventListener) media.addEventListener('change', () => { if (preference === 'system') apply(); });
+      else media.addListener?.(() => { if (preference === 'system') apply(); });
+    }
+    apply();
+  })();
+</script>

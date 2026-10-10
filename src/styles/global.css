@@ -88,3 +88,37 @@ main article ul { line-height: 1.7; }
   .catalog-inner-grid { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 24px; }
 }
 @media (prefers-reduced-motion: reduce) { .catalog-photo { transition: none; } }
+
+
+/* MS Studio appearance system: Light (default), Dark, or match operating system.
+   Brand imagery, cinematic welcome reveal and print sheets preserve original colors. */
+:root {
+  --ms-cream: 251 248 242;
+  --ms-charcoal: 34 33 32;
+  --ms-beige: 231 220 203;
+}
+:root[data-theme="dark"] {
+  --ms-cream: 21 20 22;
+  --ms-charcoal: 239 234 227;
+  --ms-beige: 79 72 72;
+  color-scheme: dark;
+}
+:root[data-theme="dark"] body { background-color:rgb(var(--ms-cream)); }
+:root[data-theme="dark"] .bg-ivory { background-color:#29272a; }
+:root[data-theme="dark"] .bg-ivory\/70 { background-color:rgb(41 39 42 / .70); }
+:root[data-theme="dark"] .bg-white { background-color:#282629; }
+:root[data-theme="dark"] .text-burgundy,
+:root[data-theme="dark"] .eyebrow { color:#efa3a7; }
+:root[data-theme="dark"] .hover\:text-burgundy:hover { color:#efa3a7; }
+:root[data-theme="dark"] .catalog-card,
+:root[data-theme="dark"] .album-photo-button { background-color:#333033; }
+:root[data-theme="dark"] :is(main, header) :is(input:not([type="checkbox"]):not([type="radio"]), select, textarea) {
+  background-color:#2f2c2f;
+  color:#f0ebe5;
+  border-color:#655b5d;
+}
+:root[data-theme="dark"] :is(main, header) :is(input, textarea)::placeholder { color:#a9a1a0; opacity:1; }
+:root[data-theme="dark"] input[type="checkbox"],
+:root[data-theme="dark"] input[type="radio"] { accent-color:#b83942; }
+:root[data-theme="dark"] .btn:hover:not(.btn-solid) { color:rgb(var(--ms-cream)); }
+@media print { :root[data-theme="dark"] body { background:white !important;color:#111 !important; } }

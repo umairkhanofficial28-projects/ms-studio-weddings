@@ -1,0 +1,39 @@
+MS STUDIO - LIGHT / DARK / SYSTEM THEME PATCH
+
+Files: 4 source files (3 updated, 1 new):
+- src/layouts/Base.astro
+- src/components/ThemeSwitcher.astro (NEW)
+- src/styles/global.css
+- tailwind.config.mjs
+
+BEFORE DEPLOYMENT
+This patch was prepared using the current public GitHub Base.astro, theme CSS, and Tailwind configuration.
+Only upload these 4 files, preserving their folder structure.
+
+HOW TO UPLOAD
+1. Extract the ZIP.
+2. GitHub: https://github.com/umairkhanofficial28-projects/ms-studio-weddings/upload/main
+3. Drag the extracted src FOLDER and tailwind.config.mjs into the upload area.
+4. Commit message: Add Light Dark System theme switcher
+5. Cloudflare Pages should rebuild automatically.
+6. Check the new theme switcher next to the navigation / Menu button.
+
+BEHAVIOR
+- Default is Light, so existing visitors continue to see the current visual look.
+- Options are Light / Dark / System (follows device setting).
+- Selected choice persists in this browser (localStorage).
+- Header/menu, basic cards, packages, calculator forms and text adapt to Dark.
+- Original cinematic hero image, logo, portfolio photographs and branded intro keep their intended colors.
+- No Web3Forms or booking backend file is modified.
+
+CHECKLIST
+- Confirm green deployment tick, homepage and navigation.
+- Try all 3 theme modes, refresh then change pages, and confirm selection persists.
+- Open booking calculator and enquiry forms in Dark mode, check form fields and messages are readable.
+- Check mobile viewport and system mode with OS dark/light settings.
+- Print/save PDF: printed quotation retains readable light print formatting.
+
+NOTES
+- Runtime preview/Cloudflare build NOT verified inside this package; please confirm after commit.
+- The welcome intro intentionally remains black/red regardless of selection.
+- GitHub can be restored by reverting the commit if any issue arises.
