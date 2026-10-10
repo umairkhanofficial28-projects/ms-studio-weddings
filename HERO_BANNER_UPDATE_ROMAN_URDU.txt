@@ -1,0 +1,14 @@
+MS Studio — Hero Banner Update (Cloudflare Pages)
+
+Files inside src:
+1) src/pages/index.astro — redesigned homepage hero, preserves 6 wedding catalogs
+2) src/assets/site/hero.webp — optimized AI-generated wedding hero image
+
+1. ZIP Extract All karein.
+2. GitHub repo ke root Upload files page par extracted src folder drag & drop karein.
+3. GitHub par sirf do file paths update hone chahiye; other files delete na karein.
+4. Commit message: Update cinematic homepage hero banner
+5. Cloudflare Deployments par green success tick check karein.
+6. Live homepage desktop/mobile par text, cover albums aur buttons check karein.
+
+NOTE: Hero image is AI-generated from inspiration supplied by the owner, not a documentary photograph of a real wedding event. Do not label the generated hero as an actual client wedding shoot. Main couple gallery images remain original supplied photographs.

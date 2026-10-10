@@ -10,15 +10,32 @@ import { albums } from '../lib/albums';
 import { socials } from '../data/socials';
 ---
 <Base title="Wedding Photographer & Cinematographer in Lahore, Pakistan" description="MS Studio — Weddings by Umair: editorial wedding photography, wedding films and custom coverage in Lahore, Pakistan.">
-  <section class="relative isolate min-h-[82vh] overflow-hidden bg-ink text-ivory md:min-h-[90vh]">
-    <Image src={heroImage} alt="Bride and groom walking together by a heritage building — from the MS Studio wedding brochure" widths={[800,1200,1600,2000]} sizes="100vw" format="webp" quality={85} loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[42%_center]" />
-    <div class="absolute inset-0 -z-10 bg-gradient-to-r from-ink/85 via-ink/45 to-ink/10"></div>
-    <div class="wrap flex min-h-[82vh] flex-col justify-end pb-16 pt-32 md:min-h-[90vh] md:pb-24">
-      <p class="eyebrow !text-champagne">A wedding story, beautifully told · {site.city}</p>
-      <h1 class="mt-7 max-w-4xl text-5xl font-normal leading-[.98] tracking-tight sm:text-6xl md:text-[clamp(5rem,8vw,8rem)]">{site.heroHeadline}</h1>
-      <p class="mt-7 max-w-md text-sm leading-7 text-ivory/85 md:text-base">{site.tagline}</p>
-      <div class="mt-9 flex flex-wrap gap-3"><a href="/portfolio/" class="btn !border-ivory !text-ivory hover:!bg-ivory hover:!text-ink">Explore the portfolio</a><a href="/build-your-package/" class="btn !border-ivory/40 !bg-ivory !text-ink">Create your experience</a></div>
-      <div class="mt-14 flex items-center gap-3 text-[10px] uppercase tracking-[.26em] text-ivory/75"><span class="h-px w-10 bg-ivory/70"></span> Wedding Photography & Cinematography</div>
+  <!-- New cinematic hero: subject left, readable editorial copy on the right. -->
+  <section class="relative isolate overflow-hidden bg-ink text-ivory" aria-label="Wedding photography and cinematography">
+    <Image
+      src={heroImage}
+      alt="Cinematic wedding scene with bride and groom in traditional Pakistani wedding attire"
+      widths={[640, 960, 1280, 1672]}
+      sizes="100vw"
+      format="webp"
+      quality={86}
+      loading="eager"
+      fetchpriority="high"
+      class="absolute inset-0 -z-20 h-full w-full object-cover object-[29%_center] md:object-center"
+    />
+    <!-- Strongest fade sits behind the copy, leaving the couple unobscured. -->
+    <div aria-hidden="true" class="absolute inset-0 -z-10 bg-gradient-to-t from-ink/95 via-ink/45 to-transparent md:bg-gradient-to-l md:from-ink/90 md:via-ink/50 md:to-transparent"></div>
+    <div class="wrap relative flex min-h-[78vh] items-end pb-12 pt-28 sm:min-h-[80vh] md:min-h-[84vh] md:items-center md:justify-end md:py-20">
+      <div class="w-full max-w-xl md:ml-auto md:w-[50%] md:max-w-[590px]">
+        <p class="eyebrow !text-champagne">A wedding story, beautifully told · {site.city}</p>
+        <h1 class="mt-5 max-w-xl text-[clamp(2.6rem,5vw,4.1rem)] font-normal leading-[1.05] tracking-tight">{site.heroHeadline}</h1>
+        <p class="mt-6 max-w-md text-sm leading-7 text-ivory/90 md:text-base">{site.tagline}</p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="/portfolio/" class="btn !border-ivory !bg-ivory !text-ink hover:!bg-transparent hover:!text-ivory">Explore the portfolio</a>
+          <a href="/build-your-package/" class="btn !border-ivory/70 !text-ivory hover:!bg-ivory hover:!text-ink">Plan your wedding</a>
+        </div>
+        <p class="mt-9 text-[10px] uppercase tracking-[.22em] text-ivory/80">Wedding photography &amp; cinematography</p>
+      </div>
     </div>
   </section>
 
