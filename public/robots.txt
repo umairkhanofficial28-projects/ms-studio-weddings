@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
-Sitemap: https://weddingsbyumair.netlify.app/sitemap-index.xml
+
+Sitemap: https://ms-studio-weddings.pages.dev/sitemap-index.xml
