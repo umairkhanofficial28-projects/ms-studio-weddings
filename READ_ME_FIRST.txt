@@ -1,16 +1,26 @@
-MS Studio — Motion & Emotion replacement photo
+MS STUDIO — LOCAL SEO + CHATGPT SEARCH DISCOVERY UPDATE
 
-This patch changes ONLY the existing image used in the “More than a film. A feeling.” section on the homepage.
-No .astro, CSS, JavaScript, theme, portfolio, or booking code is changed.
+UPLOAD TWO FILES ONLY:
+1) src/layouts/Base.astro — replacement for your existing Base.astro
+2) public/robots.txt — replacement for your existing robots.txt
 
-HOW TO INSTALL
-1. Download and extract this ZIP.
-2. In GitHub repository umairkhanofficial28-projects/ms-studio-weddings, open Add file -> Upload files on the main branch.
-3. Drag the extracted src folder into the upload area.
-4. Verify the upload path is exactly src/assets/gallery/wedding-stories/brochure-cinematic-silhouette.webp
-5. Commit directly to main with message: Replace Motion and Emotion wedding image
-6. Wait for Cloudflare Pages deployment to be successful. Reload site using Ctrl+Shift+R.
+GitHub: https://github.com/umairkhanofficial28-projects/ms-studio-weddings/upload/main
+Extract this ZIP. Upload the src and public folders so the directory structure is preserved.
+Commit message: Improve Lahore SEO and AI search discovery
+Wait for the Cloudflare Pages deployment green tick.
 
-Expected appearance: The newly provided golden-window wedding couple image replaces the previous blurry silhouette image on the LEFT of the dark Motion & Emotion section. The CSS already uses object-cover, so it fills the image area while preserving image proportions; light cropping can occur on narrow screens.
+TEST:
+- https://ms-studio-weddings.pages.dev/robots.txt
+- https://ms-studio-weddings.pages.dev/sitemap-index.xml
+- https://validator.schema.org/ (paste your page URL and inspect JSON-LD)
+- Google Search Console > URL Inspection > Test live URL
+- Google Rich Results Test: https://search.google.com/test/rich-results
 
-Image source: user-supplied Golden Palace Wedding Portrait(1).png; converted to high-quality WebP at its original resolution (1448 x 1086).
+NOTES:
+- This patch keeps your logo, dark mode, cinematic intro, navigation and booking features unchanged.
+- It creates no reviews, rankings, awards, opening hours or invented street address.
+- It only improves machine-readable site information; it cannot guarantee rankings or ChatGPT recommendations.
+- Cloudflare security rules may still block crawlers even when robots.txt permits them.
+- LocalBusiness schema enrichments use the known business city, country, phone and Google Maps listing.
+- This ZIP is a partial patch, NOT an entire website project.
+- Custom domain migration later requires updating src/data/site.ts, astro.config.mjs, sitemap files, and social profiles.

@@ -11,9 +11,100 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).toString()
 const ogImage = new URL(image, Astro.site ?? site.url).toString();
 const full = title.includes('MS Studio') ? title : `${title} | MS Studio — Weddings by Umair`;
 const nav = [['Portfolio','/portfolio/'],['Films','/films/'],['Packages','/packages/'],['Build Your Package','/build-your-package/'],['About','/about/'],['Contact','/contact/']];
-const ld = { '@context':'https://schema.org','@type':'ProfessionalService',name:site.googleBusinessName,alternateName:site.name,url:site.url,telephone:site.phoneTel,
-  description:site.description,areaServed:'Pakistan',address:{'@type':'PostalAddress',addressLocality:site.city,addressCountry:'PK'},
-  founder:{'@type':'Person',name:site.founder,jobTitle:site.founderTitle},sameAs:socials.filter(s=>s.id!=='whatsapp').map(s=>s.url)};
+// Structured data connects the Google Business listing, studio website and founder.
+// Keep business details consistent with src/data/site.ts and verified public profiles.
+const rootUrl = new URL('/', Astro.site ?? site.url).toString();
+const businessId = `${rootUrl}#business`;
+const websiteId = `${rootUrl}#website`;
+const founderId = `${rootUrl}#founder`;
+const businessProfiles = socials
+  .filter(s => ['google', 'instagram', 'facebook'].includes(s.id))
+  .map(s => s.url);
+const founderProfiles = socials
+  .filter(s => ['linkedin', 'behance'].includes(s.id))
+  .map(s => s.url);
+const googleBusinessUrl = socials.find(s => s.id === 'google')?.url;
+const weddingServices = [
+  'Wedding photography',
+  'Wedding cinematography',
+  'Nikkah photography and videography',
+  'Mehndi photography and videography',
+  'Baraat photography and videography',
+  'Walima photography and videography',
+  'Bridal and groom portraits',
+  'Couple photography',
+  'Cinematic wedding highlights and films',
+];
+const ld = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'ProfessionalService',
+      '@id': businessId,
+      name: site.googleBusinessName,
+      alternateName: site.name,
+      url: rootUrl,
+      logo: new URL('/favicon.png', rootUrl).toString(),
+      description: site.description,
+      telephone: site.phoneTel,
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: site.city,
+        addressRegion: 'Punjab',
+        addressCountry: 'PK',
+      },
+      areaServed: [
+        { '@type': 'City', name: site.city },
+        { '@type': 'Country', name: 'Pakistan' },
+      ],
+      ...(googleBusinessUrl ? { hasMap: googleBusinessUrl } : {}),
+      sameAs: businessProfiles,
+      founder: { '@id': founderId },
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name: 'Wedding photography and cinematography services',
+        itemListElement: weddingServices.map(serviceName => ({
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: serviceName,
+            provider: { '@id': businessId },
+            areaServed: { '@type': 'City', name: site.city },
+          },
+        })),
+      },
+    },
+    {
+      '@type': 'Person',
+      '@id': founderId,
+      name: site.founder,
+      jobTitle: site.founderTitle,
+      worksFor: { '@id': businessId },
+      ...(founderProfiles.length ? { sameAs: founderProfiles } : {}),
+    },
+    {
+      '@type': 'WebSite',
+      '@id': websiteId,
+      name: site.name,
+      alternateName: site.googleBusinessName,
+      url: rootUrl,
+      inLanguage: 'en-PK',
+      publisher: { '@id': businessId },
+    },
+    {
+      '@type': 'WebPage',
+      '@id': `${canonical}#webpage`,
+      url: canonical,
+      name: full,
+      description,
+      inLanguage: 'en-PK',
+      isPartOf: { '@id': websiteId },
+      about: { '@id': businessId },
+    },
+  ],
+};
+// Prevent HTML script termination if a content string ever contains '<'.
+const structuredData = JSON.stringify(ld).replace(/</g, '\\u003c');
 ---
 <!doctype html>
 <html lang="en">
@@ -21,10 +112,13 @@ const ld = { '@context':'https://schema.org','@type':'ProfessionalService',name:
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{full}</title><meta name="description" content={description} /><link rel="canonical" href={canonical} />
   <link rel="icon" href="/favicon.png" type="image/png" />
+  <meta name="robots" content="max-image-preview:large" />
+  <meta property="og:locale" content="en_PK" />
   <meta property="og:title" content={full} /><meta property="og:description" content={description} />
   <meta property="og:type" content="website" /><meta property="og:url" content={canonical} /><meta property="og:site_name" content={site.name} />
   <meta property="og:image" content={ogImage} /><meta property="og:image:alt" content="MS Studio — Weddings by Umair wedding photography" />
   <meta name="twitter:card" content="summary_large_image" /><meta name="twitter:image" content={ogImage} />
+  <meta name="twitter:title" content={full} /><meta name="twitter:description" content={description} />
   <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
   <!-- Apply the saved theme before first paint to avoid a light-mode flash. -->
@@ -41,7 +135,7 @@ const ld = { '@context':'https://schema.org','@type':'ProfessionalService',name:
       document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
     })();
   </script>
-  <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+  <script type="application/ld+json" set:html={structuredData} />
 </head>
 <body>
   <WelcomeExperience />
